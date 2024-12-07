@@ -1,5 +1,18 @@
 Collection of public facing chess tools
 
+## Setting up the python pip3 environment
+
+The following instructions describe how to set up the python environment.
+
+```
+cd python_env
+python3 -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+```
+
+---- 
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
