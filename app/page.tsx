@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface ChessBoardImageProps {
   fen: string;  // Explicitly declare the type of the 'fen' prop as string
@@ -8,35 +8,38 @@ interface ChessBoardImageProps {
 
 const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ fen }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchImage = async () => {
-      const res = await fetch('/api/fen', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fen }),
-      });
-      const data = await res.json();
+  // Function to fetch image when the button is clicked
+  const handleFetchImage = async () => {
+    setLoading(true);  // Start loading
+    const res = await fetch('/api/fen', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ fen }),
+    });
 
-      console.log("data is " + data)
+    const data = await res.json();
+    console.log("data is", data);
 
-      if (data && data.imagePath) {
-        setImageUrl(`${data.imagePath}`);
-      }
-    };
+    if (data && data.imagePath) {
+      setImageUrl(`${data.imagePath}`);  
+    }
 
-    fetchImage();
-  }, [fen]);
+    setLoading(false);  // Stop loading
+  };
 
   return (
     <div>
-      {imageUrl ? (
+      <button onClick={handleFetchImage}>Generate Chess Board Image</button>
+
+      {loading && <p>Loading...</p>}
+
+      {imageUrl && !loading ? (
         <img src={imageUrl} alt="Generated Chess Board" />
-      ) : (
-        <p>Loading...</p>
-      )}
+      ) : null}
     </div>
   );
 };
