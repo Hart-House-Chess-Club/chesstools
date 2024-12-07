@@ -35,4 +35,4 @@ image_path = os.path.join(public_gen_dir, unique_filename)
 image.save(image_path)
 
 # Print the image path (for use in the Next.js API route)
-print(f'gen/{unique_filename}')
+print(f'/gen/{unique_filename}')

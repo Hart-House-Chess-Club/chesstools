@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Image from 'next/image'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface ChessBoardImageProps {
@@ -74,8 +75,7 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
         {error && <p className="text-red-500 text-sm">{error}</p>}
         {imageUrl && !loading && (
           <div className="mt-4">
-            <img src={imageUrl} alt="Generated Chess Board" className="w-full h-auto" />
-
+            <Image src={imageUrl} alt="Generated Chess Board" className="w-full h-auto" width={800} height={500} />
             <Button className="mt-5" onClick={handleDownloadImage}>Download Image
             </Button>
           </div>

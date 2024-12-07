@@ -16,7 +16,7 @@ export default function AboutPage() {
           <ul className="list-disc pl-6 space-y-2">
             <li>This was built by Executives of the Hart House Chess Club of the University of Toronto.</li>
             <li>This website is operated as an open-source project.</li>
-            <li>We don't make any profits from this service.</li>
+            <li>We `&apos;` make any profits from this service.</li>
             <li>Our platform is built by chess players, for chess players.</li>
             <li>We are dedicated to advancing chess technology and making it more accessible.</li>
             <li>We welcome contributions and suggestions from the chess community.</li>
