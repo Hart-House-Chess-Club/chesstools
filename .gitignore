@@ -43,3 +43,6 @@ next-env.d.ts
 # python gigignore for venv
 
 venv/
+
+# generated images ignore
+python_env/scripts/gen/
