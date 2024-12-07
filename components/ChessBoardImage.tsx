@@ -44,6 +44,16 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
     }
   }
 
+  // Function to trigger the image download
+  const handleDownloadImage = () => {
+    if (imageUrl) {
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.download = imageUrl.split('/').pop() || 'chessboard.png';  // Use the file name from the URL
+      link.click();  // Trigger the download
+    }
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -65,6 +75,9 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
         {imageUrl && !loading && (
           <div className="mt-4">
             <img src={imageUrl} alt="Generated Chess Board" className="w-full h-auto" />
+
+            <Button className="mt-5" onClick={handleDownloadImage}>Download Image
+            </Button>
           </div>
         )}
       </CardContent>
