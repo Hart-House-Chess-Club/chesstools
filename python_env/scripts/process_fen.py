@@ -12,11 +12,11 @@ else:
     # Default FEN if not provided
     fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     
-# print("Began gen")
-
 # Generate the board image based on the FEN string
 renderer = BoardImage(fen)
-image = renderer.render(highlighted_squares=(chess.F8, chess.B4))
+
+# highlighted_squares=(chess.F8, chess.B4)
+image = renderer.render()
 
 # Path to the public/gen folder
 public_gen_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..', 'public', 'gen')
