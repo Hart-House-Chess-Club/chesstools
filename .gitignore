@@ -45,4 +45,4 @@ next-env.d.ts
 venv/
 
 # generated images ignore
-python_env/scripts/gen/
+public/gen/

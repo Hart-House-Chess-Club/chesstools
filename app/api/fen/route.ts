@@ -15,13 +15,14 @@ export async function POST(req: NextRequest) {
 
         const body = await req.json();
         
-        const { fen } = body;
+        let { fen } = body;
 
         console.log("fen is " + fen)
 
         // Validate the FEN input
         if (!fen || typeof fen !== 'string') {
-            return NextResponse.json({ error: 'Invalid or missing FEN string.' }, { status: 400 });
+            fen = "1r4k1/5p1p/2B1pn2/6p1/8/6P1/4PP1P/3R2K1 w - - 0 29"
+            //  return NextResponse.json({ error: 'Invalid or missing FEN string.' }, { status: 400 });
         }
 
         // Run the Python script
@@ -31,7 +32,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: stderr }, { status: 500 });
         }
 
-        return NextResponse.json({ url: stdout.trim() });
+        console.log(stdout.trim())
+
+        return NextResponse.json({ imagePath: stdout.trim() });
     } catch {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
