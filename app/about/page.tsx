@@ -10,13 +10,13 @@ export default function AboutPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p>
-            Welcome to our FEN to PNG, a project by the Hart House Chess Club of the University of Toronto. 
+            Welcome to our FEN to PNG, a project from students of the University of Toronto. 
             We are passionate about chess and technology, and this project is a testament to our commitment to both.
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>This was built by Executives of the Hart House Chess Club of the University of Toronto.</li>
             <li>This website is operated as an open-source project.</li>
-            <li>We `&apos;` make any profits from this service.</li>
+            <li>We do not make any profits from this service.</li>
             <li>Our platform is built by chess players, for chess players.</li>
             <li>We are dedicated to advancing chess technology and making it more accessible.</li>
             <li>We welcome contributions and suggestions from the chess community.</li>
