@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
         // Run the Dockerized Python script
         const { stdout, stderr } = await execPromise(
-            `docker run -v $(pwd)/public/gen:/public/gen fen-generator python /python_env/scripts/process_fen.py "${fen}"`
+            `docker run --rm  -v $(pwd)/public/gen:/public/gen fen-generator python /python_env/scripts/process_fen.py "${fen}"`
         );
 
         if (stderr) {
