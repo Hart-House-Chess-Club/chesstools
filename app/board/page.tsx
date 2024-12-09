@@ -1,11 +1,10 @@
-'use client';
-
-import { Chessboard } from "react-chessboard";
+import PlayRandomMoveEngine from '@/components/ChessBoard';
+// import ChessBoard from '@/components/BasicBoard';
 
 export default function App() {
   return (
     <div>
-      <Chessboard id="BasicBoard" />
+      <PlayRandomMoveEngine/>
     </div>
   );
 }
