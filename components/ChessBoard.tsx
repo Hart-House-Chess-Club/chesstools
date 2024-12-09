@@ -1,13 +1,16 @@
 'use client';
 
 import { useState } from "react";
-import Chess from "chess.js";
+
+// import Chess from 'chess.js';
+import { Chess, ShortMove, Square } from 'chess.js';
 import { Chessboard } from "react-chessboard";
+
 
 export default function ChessBoardRandom() {
   const [game, setGame] = useState(new Chess());
 
-  function makeAMove(move) {
+  function makeAMove(move: string | ShortMove) {
     const gameCopy = { ...game };
     const result = gameCopy.move(move);
     setGame(gameCopy);
@@ -22,7 +25,7 @@ export default function ChessBoardRandom() {
     makeAMove(possibleMoves[randomIndex]);
   }
 
-  function onDrop(sourceSquare, targetSquare) {
+  function onDrop(sourceSquare: Square, targetSquare: Square) {
     const move = makeAMove({
       from: sourceSquare,
       to: targetSquare,
