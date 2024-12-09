@@ -1,10 +1,13 @@
-import PlayRandomMoveEngine from '@/components/ChessBoard';
+import ChessBoardRandom from '@/components/ChessBoard';
 // import ChessBoard from '@/components/BasicBoard';
 
-export default function App() {
+export default function ChessBoard() {
   return (
-    <div>
-      <PlayRandomMoveEngine/>
+    <div className="max-w-3xl mx-auto mt-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">Play with a random chess board</h1>
+      <div className='max-w-2xl'>
+        <ChessBoardRandom/>
+      </div>
     </div>
   );
 }
