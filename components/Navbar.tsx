@@ -17,6 +17,12 @@ const Navbar = () => {
           <Link href="/about" className="text-white hover:text-gray-300">
             About
           </Link>
+          <Link href="/board" className="text-white hover:text-gray-300">
+            Board
+          </Link>
+          <Link href="/play" className="text-white hover:text-gray-300">
+            Play
+          </Link>
           <Link href="/generator" className="text-white hover:text-gray-300">
             Board Generator
           </Link>

@@ -2,7 +2,7 @@
 
 import { Chessboard } from "react-chessboard";
 
-export default function ChessBoard() {
+export default function BasicBoard() {
   return (
     <div>
       <Chessboard id="BasicBoard" />
