@@ -7,7 +7,7 @@ export default function Home() {
       <p className="mb-4">
         This tool hosts useful tools for chess players and organizers of chess tools.
       </p>
-      <Image src="/gh.jpg" alt="Chess Tournament in Toronto" className="w-full h-auto m-2 p-5" width={800} height={500} unoptimized/>
+      <Image src="/gh.jpg" alt="Chess Tournament in Toronto" className="w-full h-auto m-2 p-5" width={800} height={500}/>
       </div>
   )
 }
