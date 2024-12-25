@@ -4,6 +4,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 
 export default function ChessBoard() {
   return (
+    <div className="max-w-3xl mx-auto mt-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">Play chesstools.org</h1>
     <Card className="w-full max-w-md mx-auto">
     <CardHeader>
       <CardTitle>Play with a random chess board</CardTitle>
@@ -22,5 +24,6 @@ export default function ChessBoard() {
         </Button> */}
       </CardFooter>
     </Card>
+    </div>
   );
 }

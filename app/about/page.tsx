@@ -4,7 +4,7 @@ import Image from 'next/image'
 export default function AboutPage() {
   return (
     <div className="max-w-3xl mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">About Our Chess Board Generator</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">About chesstools.org</h1>
       <Card>
         <CardHeader>
           <CardTitle>Our Mission</CardTitle>
