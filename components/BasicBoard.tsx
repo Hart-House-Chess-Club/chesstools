@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useCallback } from "react"
-import { Chess } from "chess.js"
+import { Chess, Square, PieceType } from "chess.js"
 import { Chessboard } from "react-chessboard"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -10,17 +10,30 @@ import { Button } from "@/components/ui/button"
 
 const pieces = ["wP", "wN", "wB", "wR", "wQ", "wK", "bP", "bN", "bB", "bR", "bQ", "bK"]
 
+// Valid PieceType values
+const pieceTypeMap: Record<string, PieceType> = {
+  P: "p",
+  N: "n",
+  B: "b",
+  R: "r",
+  Q: "q",
+  K: "k",
+}
+
 const BasicBoard: React.FC = () => {
   const [game, setGame] = useState(new Chess())
   const [selectedPiece, setSelectedPiece] = useState<string | null>(null)
 
   const onDrop = useCallback(
-    (sourceSquare: string, targetSquare: string) => {
+    (sourceSquare: Square, targetSquare: Square) => {
       if (selectedPiece) {
         const gameCopy = new Chess(game.fen())
         gameCopy.remove(targetSquare)
         gameCopy.put(
-          { type: selectedPiece[1].toLowerCase(), color: selectedPiece[0] === "w" ? "w" : "b" },
+          {
+            type: pieceTypeMap[selectedPiece[1]] as PieceType, // Ensure correct type
+            color: selectedPiece[0] === "w" ? "w" : "b",
+          },
           targetSquare,
         )
         setGame(gameCopy)
@@ -68,7 +81,7 @@ const BasicBoard: React.FC = () => {
           <Chessboard
             position={game.fen()}
             onPieceDrop={onDrop}
-            customDragLayers={selectedPiece ? [{ piece: selectedPiece, key: "custom" }] : []}
+            // customDragLayers={selectedPiece ? [{ piece: selectedPiece, key: "custom" }] : []}
           />
         </div>
         <div className="mt-4 flex space-x-4">
