@@ -42,7 +42,7 @@ const Navbar = () => {
                     <ListItem href="/board" title="Board">
                       Interactive chess board to generate your own positions
                     </ListItem>
-                    <ListItem href="/play" title="Board Generator">
+                    <ListItem href="/play" title="Play">
                       Play against a random opponent
                     </ListItem>
                   </ul>
