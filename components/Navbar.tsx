@@ -20,7 +20,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const Navbar = () => {
   return (
-    <nav className="bg-primary p-4">
+    <nav className="bg-primary p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/chesstools.svg" alt="Chess Tools" width={100} height={50} className="h-auto" />
