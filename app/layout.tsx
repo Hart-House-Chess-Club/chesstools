@@ -6,8 +6,8 @@ import Navbar from '@/components/Navbar'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Chesstools',
-  description: 'Chesstools for organizers, players, and arbiters worldwide.',
+  title: 'ChessTools',
+  description: 'ChessTools for organizers, players, and arbiters worldwide.',
 }
 
 export default function RootLayout({
