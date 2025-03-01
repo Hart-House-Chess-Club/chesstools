@@ -32,7 +32,7 @@ export default function AboutPage() {
           <p>
             If you have ideas for improvements or would like to contribute to the project, please let us know through our <a href="https://github.com/Hart-House-Chess-Club/chesstools">GitHub project</a>.
           </p>
-          <Image src="/fullboard.png" alt="Default chess board image generated" className="w-full h-auto m-2 p-5" width={800} height={500} unoptimized/>
+          <Image src="/fullboard.png" alt="Default chess board image generated" className="w-full h-auto m-2 p-5" width={800} height={800} unoptimized/>
           </CardContent>
       </Card>
     </div>
