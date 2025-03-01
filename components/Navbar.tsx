@@ -40,10 +40,10 @@ const Navbar = () => {
                       Convert FEN notation to PNG images
                     </ListItem>
                     <ListItem href="/board" title="Board">
-                      Interactive chess board
+                      Interactive chess board to generate your own positions
                     </ListItem>
-                    <ListItem href="/generator" title="Board Generator">
-                      Generate custom chess boards
+                    <ListItem href="/play" title="Board Generator">
+                      Play against a random opponent
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>

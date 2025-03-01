@@ -108,15 +108,15 @@ export default function Home() {
                     <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
                   </svg>
                 </div>
-                <CardTitle>Board Generator</CardTitle>
-                <CardDescription>Create custom chess boards for your specific needs</CardDescription>
+                <CardTitle>Play</CardTitle>
+                <CardDescription>Play against various levels of difficulty</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Customize colors, pieces, and annotations to create the perfect chess diagram for any purpose.</p>
+                <p>Currently a developing feature with ability to play against randomly generated opponent.</p>
               </CardContent>
               <CardFooter>
                 <Button variant="outline" asChild className="w-full">
-                  <Link href="/generator">Create Board</Link>
+                  <Link href="/play">Play</Link>
                 </Button>
               </CardFooter>
             </Card>

@@ -226,7 +226,7 @@ Project Link: [https://github.com/Hart-House-Chess-Club/chesstools](https://gith
 ## Acknowledgments
 
 * [Chess Federation of Canada](https://chess.ca)
-* [lichess.org](https://lichess.org)
+* [lichess.org](https://lichess.org) for the usage of the Staunty chess set svgs.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
