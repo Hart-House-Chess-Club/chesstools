@@ -30,7 +30,7 @@ export default function AboutPage() {
             The application is hosted on a Linux 22.0 server running Docker. Our main costs are infrastructure costs and would appreciate any support. 
           </p>
           <p>
-            If you have ideas for improvements or would like to contribute to the project, please let us know through our GitHub project.
+            If you have ideas for improvements or would like to contribute to the project, please let us know through our <a href="https://github.com/Hart-House-Chess-Club/chesstools">GitHub project</a>.
           </p>
           <Image src="/fullboard.png" alt="Default chess board image generated" className="w-full h-auto m-2 p-5" width={800} height={500} unoptimized/>
           </CardContent>
