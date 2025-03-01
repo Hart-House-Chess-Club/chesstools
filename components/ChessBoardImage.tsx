@@ -75,7 +75,7 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
         {error && <p className="text-red-500 text-sm">{error}</p>}
         {imageUrl && !loading && (
           <div className="mt-4">
-            <Image src={imageUrl} alt="Generated Chess Board" className="w-full h-auto" width={800} height={500} unoptimized/>
+            <Image src={imageUrl} alt="Generated Chess Board" className="w-full h-auto" width={800} height={800} unoptimized/>
             <Button className="mt-5" onClick={handleDownloadImage}>Download Image
             </Button>
           </div>
