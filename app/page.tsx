@@ -115,7 +115,7 @@ export default function Home() {
               </CardContent>
               <CardFooter>
                 <Button variant="outline" asChild className="w-full">
-                  <Link href="play-random">Play</Link>
+                  <Link href="analysis">Analyze</Link>
                 </Button>
               </CardFooter>
             </Card>
