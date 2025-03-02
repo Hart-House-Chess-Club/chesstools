@@ -1,51 +1,53 @@
-/*!
- * Stockfish.js (http://github.com/nmrugg/stockfish.js)
- * License: GPL
- */
-
-/*
- * Description of the universal chess interface (UCI)  https://gist.github.com/aliostad/f4470274f39d29b788c1b09519e67372/
- */
-
-// const stockfish = new Worker("./stockfish.js");
+import { useState, useEffect } from "react";
 
 type EngineMessage = {
-  /** stockfish engine message in UCI format*/
   uciMessage: string;
-  /** found best move for current position in format `e2e4`*/
   bestMove?: string;
-  /** found best move for opponent in format `e7e5` */
   ponder?: string;
-  /**  material balance's difference in centipawns(IMPORTANT! stockfish gives the cp score in terms of whose turn it is)*/
   positionEvaluation?: string;
-  /** count of moves until mate */
   possibleMate?: string;
-  /** the best line found */
   pv?: string;
-  /** number of halfmoves the engine looks ahead */
   depth?: number;
 };
 
-export default class Engine {
-  stockfish: Worker;
-  onMessage: (callback: (messageData: EngineMessage) => void) => void;
-  isReady: boolean;
+export default function Engine() {
+  const [worker, setWorker] = useState<Worker | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
-  constructor() {
-    this.stockfish = new Worker("./stockfish.js");
-    this.isReady = false;
-    this.onMessage = (callback) => {
-      this.stockfish.addEventListener("message", (e) => {
-        callback(this.transformSFMessageData(e));
-      });
-    };
-    this.init();
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Dynamically load the Stockfish worker script
+      const stockfishWorker = new Worker("./stockfish.js");
+      setWorker(stockfishWorker);
+
+      stockfishWorker.postMessage("uci");
+      stockfishWorker.postMessage("isready");
+
+      stockfishWorker.onmessage = (e) => {
+        const uciMessage = e.data;
+        if (uciMessage === "readyok") {
+          setIsReady(true);
+        }
+      };
+
+      return () => {
+        stockfishWorker.terminate(); // Cleanup when component unmounts
+      };
+    }
+  }, []);
+
+  const onMessage = (callback: (messageData: EngineMessage) => void) => {
+    if (worker) {
+      worker.onmessage = (e) => {
+        const messageData = transformSFMessageData(e);
+        callback(messageData);
+      };
+    }
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private transformSFMessageData(e: MessageEvent<any>) {
+  const transformSFMessageData = (e: MessageEvent<any>): EngineMessage => {
     const uciMessage = e?.data ?? e;
-
     return {
       uciMessage,
       bestMove: uciMessage.match(/bestmove\s+(\S+)/)?.[1],
@@ -55,39 +57,35 @@ export default class Engine {
       pv: uciMessage.match(/ pv\s+(.*)/)?.[1],
       depth: Number(uciMessage.match(/ depth\s+(\S+)/)?.[1]) ?? 0,
     };
-  }
+  };
 
-  init() {
-    this.stockfish.postMessage("uci");
-    this.stockfish.postMessage("isready");
-    this.onMessage(({ uciMessage }) => {
-      if (uciMessage === "readyok") {
-        this.isReady = true;
-      }
-    });
-  }
+  const init = () => {
+    if (worker) {
+      worker.postMessage("uci");
+      worker.postMessage("isready");
+    }
+  };
 
-  onReady(callback: () => void) {
-    this.onMessage(({ uciMessage }) => {
-      if (uciMessage === "readyok") {
-        callback();
-      }
-    });
-  }
+  const evaluatePosition = (fen: string, depth = 12) => {
+    if (worker) {
+      if (depth > 24) depth = 24;
+      worker.postMessage(`position fen ${fen}`);
+      worker.postMessage(`go depth ${depth}`);
+    }
+  };
 
-  evaluatePosition(fen: string, depth = 12) {
-    if (depth > 24) depth = 24;
+  const stop = () => {
+    if (worker) {
+      worker.postMessage("stop");
+    }
+  };
 
-    this.stockfish.postMessage(`position fen ${fen}`);
-    this.stockfish.postMessage(`go depth ${depth}`);
-  }
+  const terminate = () => {
+    if (worker) {
+      worker.postMessage("quit");
+    }
+    setIsReady(false);
+  };
 
-  stop() {
-    this.stockfish.postMessage("stop"); // Run when searching takes too long time and stockfish will return you the bestmove of the deep it has reached
-  }
-
-  terminate() {
-    this.isReady = false;
-    this.stockfish.postMessage("quit"); // Run this before chessboard unmounting.
-  }
+  return { isReady, onMessage, evaluatePosition, stop, terminate, init };
 }

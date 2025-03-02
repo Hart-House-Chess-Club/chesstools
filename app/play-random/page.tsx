@@ -1,28 +1,22 @@
 import ChessBoardRandom from '@/components/ChessBoard';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function ChessBoard() {
   return (
-    <div className="max-w-3xl mx-auto mt-8">
+    <div className="mx-auto mt-8">
       <h1 className="text-3xl font-bold mb-6 text-center">Play chesstools.org</h1>
-    <Card className="w-full max-w-md mx-auto">
-    <CardHeader>
-      <CardTitle>Play with a random chess board</CardTitle>
-    </CardHeader>
-  <CardContent className="space-y-4">
-    <div className="max-w-3xl mx-auto mt-8">
-      <div className='max-w-2xl'>
-        <ChessBoardRandom/>
-      </div>
-    </div>
-    </CardContent>
-
-    <CardFooter>
-        {/* <Button onClick={handleFetchImage} disabled={loading} className="w-full">
-          {loading ? "Generating..." : "Generate Chess Board Image"}
-        </Button> */}
-      </CardFooter>
-    </Card>
+      <Card className="w-1/2 mx-auto">
+        <CardContent className="space-y-4">
+          <div className="w-full mx-auto">
+            <div className="w-full max-w-3xl mx-auto">
+              <ChessBoardRandom />
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground text-center">
+            Play against the computer. Moves are randomly generated, elo is approx 100.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

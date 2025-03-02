@@ -42,8 +42,8 @@ const Navbar = () => {
                     <ListItem href="/board" title="Board">
                       Interactive chess board to generate your own positions
                     </ListItem>
-                    <ListItem href="/play-random" title="Play">
-                      Play against a random opponent
+                    <ListItem href="/analysis" title="Analysis">
+                      Analyze games with Stockfish
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -88,14 +88,14 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent side="right" className="w-[250px]">
             <div className="flex flex-col gap-4 mt-8">
-              <Link href="/generator" className="text-lg font-medium">
-                FEN to PNG
-              </Link>
               <Link href="/board" className="text-lg font-medium">
                 Board
               </Link>
               <Link href="/play-random" className="text-lg font-medium">
                 Play
+              </Link>
+              <Link href="/analysis" className="text-lg font-medium">
+                Analysis
               </Link>
               <Link href="/generator" className="text-lg font-medium">
                 Board Generator

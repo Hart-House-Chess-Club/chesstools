@@ -64,7 +64,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p>
-                  Generate beautiful chess diagrams from FEN strings for your articles, books, or teaching materials.
+                  Generate beautiful chess diagrams from FEN strings for your articles, books, or teaching materials. Download as PNG.
                 </p>
               </CardContent>
               <CardFooter>
@@ -83,10 +83,10 @@ export default function Home() {
                   </svg>
                 </div>
                 <CardTitle>Interactive Board</CardTitle>
-                <CardDescription>Analyze positions and play against the computer</CardDescription>
+                <CardDescription>Create positions and copy FEN positions</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Set up positions, analyze variations, and test your skills against different difficulty levels.</p>
+                <p>Set up positions from the initial starting position, start with no pieces, or add new pieces.</p>
               </CardContent>
               <CardFooter>
                 <Button variant="outline" asChild className="w-full">
@@ -94,7 +94,6 @@ export default function Home() {
                 </Button>
               </CardFooter>
             </Card>
-
             <Card>
               <CardHeader>
                 <div className="w-12 h-12 mb-4 text-primary">
@@ -108,11 +107,11 @@ export default function Home() {
                     <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
                   </svg>
                 </div>
-                <CardTitle>Play</CardTitle>
-                <CardDescription>Play against various levels of difficulty</CardDescription>
+                <CardTitle>Analyze</CardTitle>
+                <CardDescription>Analyze positions with Stockfish</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Currently a developing feature with ability to play against randomly generated opponent.</p>
+                <p>Generate the best lines for any position either starting from the inital position or from FEN.</p>
               </CardContent>
               <CardFooter>
                 <Button variant="outline" asChild className="w-full">

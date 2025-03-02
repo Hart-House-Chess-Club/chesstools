@@ -6,12 +6,7 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Chess, Square } from 'chess.js';
 
 import dynamic from "next/dynamic";
-import Engine from "./stockfish/engine";
-
-// const ChessboardDnDProvider = dynamic(
-//   () => import("react-chessboard").then((mod) => mod.ChessboardDnDProvider),
-//   { ssr: false }
-// );
+import useStockfish from "./stockfish/engine";
 
 const Chessboard = dynamic(
   () => import("react-chessboard").then((mod) => mod.Chessboard),
@@ -46,7 +41,7 @@ const inputStyle = {
 };
 
 export  default function AnalysisBoard() {
-    const engine = useMemo(() => new Engine(), []);
+  const { evaluatePosition, stop, onMessage } = useStockfish();
     const game = useMemo(() => new Chess(), []);
     const inputRef = useRef<HTMLInputElement>(null);
     const [chessBoardPosition, setChessBoardPosition] = useState(game.fen());
@@ -56,9 +51,8 @@ export  default function AnalysisBoard() {
     const [possibleMate, setPossibleMate] = useState("");
   
     function findBestMove() {
-      engine.evaluatePosition(chessBoardPosition, 18);
-  
-      engine.onMessage(({ positionEvaluation, possibleMate, pv, depth }) => {
+      evaluatePosition(chessBoardPosition, 18);
+      onMessage(({ positionEvaluation, possibleMate, pv, depth }) => {
         if (depth && depth < 10) return;
   
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -90,7 +84,7 @@ export  default function AnalysisBoard() {
         // illegal move
         if (move === null) return false;
     
-        engine.stop();
+        stop();
         setBestline("");
     
         if (game.game_over() || game.in_draw()) return false;
