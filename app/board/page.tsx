@@ -1,4 +1,4 @@
-import BasicBoard from "@/components/ChessBoardEditor"
+import BasicRandomPlayer from "@/components/ChessBoardEditor"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function ChessBoard() {
@@ -11,7 +11,7 @@ export default function ChessBoard() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="w-full">
-            <BasicBoard />
+            <BasicRandomPlayer />
           </div>
           <p className="text-sm text-muted-foreground text-center">
             Select a piece from the top bar and click on the board to place it. Drag and drop pieces to move them. Use

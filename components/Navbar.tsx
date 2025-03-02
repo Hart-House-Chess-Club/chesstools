@@ -42,7 +42,7 @@ const Navbar = () => {
                     <ListItem href="/board" title="Board">
                       Interactive chess board to generate your own positions
                     </ListItem>
-                    <ListItem href="/play" title="Play">
+                    <ListItem href="/play-random" title="Play">
                       Play against a random opponent
                     </ListItem>
                   </ul>
@@ -50,7 +50,7 @@ const Navbar = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/play" legacyBehavior passHref>
+                <Link href="/play-random" legacyBehavior passHref>
                   <NavigationMenuLink
                     className={cn(
                       navigationMenuTriggerStyle(),
@@ -88,13 +88,13 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent side="right" className="w-[250px]">
             <div className="flex flex-col gap-4 mt-8">
-              <Link href="/fen-to-png" className="text-lg font-medium">
+              <Link href="/generator" className="text-lg font-medium">
                 FEN to PNG
               </Link>
               <Link href="/board" className="text-lg font-medium">
                 Board
               </Link>
-              <Link href="/play" className="text-lg font-medium">
+              <Link href="/play-random" className="text-lg font-medium">
                 Play
               </Link>
               <Link href="/generator" className="text-lg font-medium">

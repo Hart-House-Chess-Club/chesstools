@@ -116,7 +116,7 @@ export default function Home() {
               </CardContent>
               <CardFooter>
                 <Button variant="outline" asChild className="w-full">
-                  <Link href="/play">Play</Link>
+                  <Link href="play-random">Play</Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -156,7 +156,7 @@ export default function Home() {
             Explore our collection of chess tools designed to help you analyze, learn, and grow as a chess player.
           </p>
           <Button size="lg" variant="secondary" asChild>
-            <Link href="/play">Start Playing Now</Link>
+            <Link href="/play-random">Start Playing Now</Link>
           </Button>
         </div>
       </section>

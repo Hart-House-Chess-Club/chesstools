@@ -23,7 +23,7 @@ const pieceTypeMap: Record<string, PieceType> = {
   K: "k",
 }
 
-const BasicBoard: React.FC = () => {
+const BasicRandomPlayer: React.FC = () => {
   const [game, setGame] = useState(new Chess())
   const [selectedPiece, setSelectedPiece] = useState<string | null>(null)
   const [fen, setFen] = useState(game.fen())
@@ -186,5 +186,5 @@ const BasicBoard: React.FC = () => {
   )
 }
 
-export default BasicBoard
+export default BasicRandomPlayer
 
