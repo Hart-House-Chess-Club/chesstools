@@ -1,4 +1,4 @@
-import ChessBoardEditor from "@/components/ChessBoardEditor"
+import AnalysisBoard from "@/components/AnalysisBoard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function ChessBoard() {
@@ -11,11 +11,10 @@ export default function ChessBoard() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="w-full">
-            <ChessBoardEditor />
+            <AnalysisBoard />
           </div>
           <p className="text-sm text-muted-foreground text-center">
-            Select a piece from the top bar and click on the board to place it. Drag and drop pieces to move them. Use
-            the buttons below to clear or reset the board.
+            Analysis Board info
           </p>
         </CardContent>
       </Card>

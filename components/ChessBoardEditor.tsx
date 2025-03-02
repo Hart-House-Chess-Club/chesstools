@@ -45,7 +45,7 @@ const inputStyle = {
   width: "100%",
 };
 
-export default function ChessBoardRandom() {
+export default function ChessBoardEditor() {
   const game = useMemo(() => new Chess("8/8/8/8/8/8/8/8 w - - 0 1"), []); // empty board
   const [boardOrientation, setBoardOrientation] = useState<"white" | "black">("white");
   const [boardWidth, setBoardWidth] = useState(360);
