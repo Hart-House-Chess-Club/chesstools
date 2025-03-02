@@ -30,6 +30,7 @@ const BasicBoard: React.FC = () => {
 
   const onDrop = useCallback(
     (sourceSquare: Square, targetSquare: Square) => {
+      console.log("onDrop called")
       if (selectedPiece) {
         const gameCopy = new Chess(game.fen())
         gameCopy.remove(targetSquare)

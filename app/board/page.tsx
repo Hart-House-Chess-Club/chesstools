@@ -1,4 +1,4 @@
-import BasicBoard from "@/components/BasicBoard"
+import BasicBoard from "@/components/ChessBoardEditor"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function ChessBoard() {
