@@ -227,6 +227,7 @@ Project Link: [https://github.com/Hart-House-Chess-Club/chesstools](https://gith
 
 * [Chess Federation of Canada](https://chess.ca)
 * [lichess.org](https://lichess.org) for the usage of the Staunty chess set svgs.
+* [react-chessboard](https://github.com/Clariity/react-chessboard/) which has amazing chess integrations out of the box.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
