@@ -1,5 +1,5 @@
 import ChessBoardRandom from '@/components/ChessBoard';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function ChessBoard() {
   return (
