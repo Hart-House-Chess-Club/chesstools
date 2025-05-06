@@ -1,17 +1,54 @@
-name: app
-
-on: [push]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-      - run: npm ci
-      - run: npm run build --if-present
+---
+  name: Deploy Frontend
+  
+  on:
+    push:
+      branches:
+        - main
+  
+  jobs:
+    deploy:
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+  
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20'
+            cache: 'npm'
+  
+        - name: Install Dependencies
+          run: npm ci
+          
+        - name: Check npm version
+          run: npm --version
+  
+        - name: Build Site
+          run: npm run build
+          env:
+            CI: false
+  
+        - name: List deployment files
+          run: ls -la /public
+  
+        - name: Build & Start Server with PM2
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.HOST_IP }}
+            username: ${{ secrets.HOST_USERNAME }}
+            key: ${{ secrets.HOST_KEY }}
+            port: ${{ secrets.HOST_PORT }}
+            script: |
+              cd /root/chesstools
+              git pull origin main
+              npm ci
+              npm run build
+              pm2 list
+              # Stop existing process if running
+              pm2 restart chesstools || true
+              pm2 start npm --name "chesstools" -- start -- --port 3001
+              pm2 save
+              pm2 status

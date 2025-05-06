@@ -128,24 +128,9 @@ This is an example of how to list things you need to use the software and how to
 
 Below is the installation process for running our code locally. 
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/Hart-House-Chess-Club/chesstools.git
-   ```
-2. Launch the program 
-   ```
-   python main.py
-   ```
-3. The following instructions describe how to set up the python environment.
-    ```
-    cd python_env
-    python3 -m venv venv
-    source venv/bin/activate  # or venv\Scripts\activate on Windows
-    pip install -r requirements.txt
-    ```
+`npm run build`
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+`npm run start`
 
 <!-- USAGE EXAMPLES -->
 
