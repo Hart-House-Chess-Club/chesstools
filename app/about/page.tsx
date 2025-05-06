@@ -1,40 +1,163 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import Image from "next/legacy/image"
+import Image from "next/image"
+import Link from "next/link"
+import { Github } from "lucide-react"
+import { ChessBoard } from "@/components/chess-board"
+import { Button } from "@/components/ui/button"
 
 export default function AboutPage() {
   return (
-    <div className="max-w-3xl mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">About chesstools.org</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Our Mission</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p>
-            Welcome to <a href="https://chesstools.org">chesstools.org</a> project made for chess players by chess players.
+    <div className="min-h-screen bg-gradient-to-b from-primary/10 to-background">
+      {/* Hero Section with ChessBoard background */}
+      <section className="relative overflow-hidden py-20">
+        <div className="absolute -top-24 -left-24 opacity-10 pointer-events-none">
+          <ChessBoard size={260} />
+        </div>
+        <div className="absolute -bottom-24 -right-24 opacity-10 pointer-events-none">
+          <ChessBoard size={260} />
+        </div>
+        <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-center bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
+            <span>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="inline-block text-primary">
+                <path d="M12 2L8 6H16L12 2Z" fill="currentColor" />
+                <circle cx="12" cy="16" r="6" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            </span>
+            About chesstools.org
+          </h1>
+          <p className="text-xl text-center text-gray-600 dark:text-gray-300 max-w-2xl">
+            A project made for chess players by chess players
           </p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>This was built by Executives of the Hart House Chess Club of the University of Toronto.</li>
-            <li>This application is operated as an open-source project.</li>
-            <li>We do not make any profits from this service.</li>
-            <li>Our platform is built by chess players, for chess players.</li>
-            <li>We are dedicated to advancing chess technology and making it more accessible.</li>
-            <li>We welcome contributions and suggestions from the chess community.</li>
-          </ul>
-          <p>
-            Our goal is to provide a useful tool for chess enthusiasts, coaches, and players of all levels. 
-            By offering accessible, easy to use tools, we hope to contribute 
-            to chess analysis, teaching, and enjoyment.
+        </div>
+      </section>
+
+      {/* Main Content in Cards */}
+      <section className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
+              <span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
+                  <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
+                </svg>
+              </span>
+              <CardTitle>Our Mission</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <p className="text-lg">
+                Welcome to <Link href="https://chesstools.org" className="text-blue-600 dark:text-blue-400 hover:underline">chesstools.org</Link> — built for the chess community.
+              </p>
+              <p>
+                Our goal is to provide useful tools for chess enthusiasts, coaches, and players of all levels. 
+                By offering accessible, easy-to-use tools, we hope to contribute 
+                to chess analysis, teaching, and enjoyment.
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
+              <span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
+                  <path d="M12 2L8 6H16L12 2Z" fill="currentColor" />
+                  <circle cx="12" cy="16" r="6" stroke="currentColor" strokeWidth="2" />
+                </svg>
+              </span>
+              <CardTitle>Who We Are</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <ul className="space-y-2">
+                <li className="flex items-start">
+                  <span className="text-green-600 mr-2">♟️</span>
+                  Built by Executives of the Hart House Chess Club at the University of Toronto
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 mr-2">♟️</span>
+                  Open-source project with no profit motive
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 mr-2">♟️</span>
+                  Dedicated to advancing chess technology and accessibility
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 mr-2">♟️</span>
+                  Community-driven with welcome contributions
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Image Section */}
+        <Card className="w-full overflow-hidden mb-12 border border-gray-200 dark:border-gray-800">
+          <div className="relative aspect-video w-full">
+            <Image 
+              src="/fullboard.png" 
+              alt="Chess board visualization" 
+              fill 
+              className="object-cover transition-transform hover:scale-[1.02] duration-700"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 60vw"
+            />
+          </div>
+        </Card>
+
+        {/* Infrastructure & Contribution */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
+              <span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
+                  <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+                </svg>
+              </span>
+              <CardTitle>Infrastructure</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <p>
+                The application is hosted on a Linux 22.0 server running Docker. Our main costs are infrastructure costs and we appreciate any support.
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
+              <span>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
+                  <path d="M12 2L8 6H16L12 2Z" fill="currentColor" />
+                </svg>
+              </span>
+              <CardTitle>Contribute</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <p className="mb-4">
+                Have ideas for improvements or want to contribute to the project?
+              </p>
+              <Link 
+                href="https://github.com/Hart-House-Chess-Club/chesstools"
+                className="inline-flex items-center px-4 py-2 rounded-md bg-black text-white hover:bg-gray-800 transition-colors"
+              >
+                <Github className="mr-2 h-5 w-5" />
+                Visit our GitHub
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-16 bg-primary text-primary-foreground mt-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Explore More Chess Tools?</h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            Discover our collection of chess tools designed to help you analyze, learn, and grow as a chess player.
           </p>
-          <p>
-            The application is hosted on a Linux 22.0 server running Docker. Our main costs are infrastructure costs and would appreciate any support. 
-          </p>
-          <p>
-            If you have ideas for improvements or would like to contribute to the project, please let us know through our <a href="https://github.com/Hart-House-Chess-Club/chesstools">GitHub project</a>.
-          </p>
-          <Image src="/fullboard.png" alt="Default chess board image generated" className="w-full h-auto m-2 p-5" width={800} height={800} unoptimized/>
-          </CardContent>
-      </Card>
+          <Button size="lg" variant="secondary" asChild>
+            <Link href="/">Back to Homepage</Link>
+          </Button>
+        </div>
+      </section>
     </div>
   )
 }
