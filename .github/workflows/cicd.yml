@@ -31,9 +31,6 @@
           env:
             CI: false
   
-        - name: List deployment files
-          run: ls -la /public
-  
         - name: Build & Start Server with PM2
           uses: appleboy/ssh-action@master
           with:
