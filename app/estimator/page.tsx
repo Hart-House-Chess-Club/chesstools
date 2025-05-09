@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 function validateInput(
   rOld: number,
@@ -136,12 +139,12 @@ export default function EstimatorPage() {
       <h1 className="text-3xl font-bold mb-6 text-center">Canadian Ratings Estimator</h1>
       <Card>
         <CardContent className="py-6">
-          <form className="space-y-4" onSubmit={handleEstimate}>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex-1 min-w-[180px]">
-                <label className="block text-sm font-medium mb-1">
+          <form className="space-y-4 p-6" onSubmit={handleEstimate}>
+            <div className="flex flex-wrap gap-4 mb-4">
+              <div className="flex-1 min-w-[180px] mb-4">
+                <label className="block text-sm font-medium mb-1"> </label>
                   Your current rating:
-                  <input
+                  <Input
                     className="input input-bordered w-full mt-1"
                     type="number"
                     min={200}
@@ -149,12 +152,11 @@ export default function EstimatorPage() {
                     value={rOld}
                     onChange={e => setROld(Number(e.target.value))}
                   />
-                </label>
               </div>
-              <div className="flex-1 min-w-[180px]">
-                <label className="block text-sm font-medium mb-1">
+              <div className="flex-1 min-w-[180px] mb-4">
+                <label className="block text-sm font-medium mb-1"></label>
                   Your lifetime highest rating:
-                  <input
+                  <Input
                     className="input input-bordered w-full mt-1"
                     type="number"
                     min={200}
@@ -162,32 +164,30 @@ export default function EstimatorPage() {
                     value={rHigh}
                     onChange={e => setRHigh(Number(e.target.value))}
                   />
-                </label>
                 <div className="text-xs text-muted-foreground">
                   If unknown, set to a high number (3000).
                 </div>
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-1"></label>
                 Your opponent ratings:
-                <textarea
+                <Textarea
                   className="textarea textarea-bordered w-full mt-1"
                   rows={2}
                   value={rOthers}
                   onChange={e => setROthers(e.target.value)}
                   placeholder="e.g. 1800 1700 1600"
                 />
-              </label>
               <div className="text-xs text-muted-foreground">
                 Enter just their ratings (separated by spaces or commas)
               </div>
             </div>
-            <div className="flex flex-wrap gap-4 items-end">
-              <div>
-                <label className="block text-sm font-medium mb-1">
+            <div className="flex flex-wrap gap-4 items-end mb-4">
+              <div className="mb-4">
+                {/* <label className="block text-sm font-medium mb-1"> */}
                   Your score:
-                  <input
+                  <Input
                     className="input input-bordered w-24 mt-1"
                     type="number"
                     min={0}
@@ -196,28 +196,27 @@ export default function EstimatorPage() {
                     value={score}
                     onChange={e => setScore(Number(e.target.value))}
                   />
-                </label>
+                {/* </label> */}
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">
+              <div className="mb-4">
+                {/* <label className="block text-sm font-medium mb-1"> */}
                   Games played:
-                  <input
+                  <Input
                     className="input input-bordered w-20 mt-1"
                     type="text"
                     value={games}
                     disabled
                   />
-                </label>
+                {/* </label> */}
               </div>
-              <button
+              <Button
                 type="submit"
                 className="btn btn-primary ml-2"
               >
                 Estimate
-              </button>
+              </Button>
             </div>
-          </form>
-          {errors.length > 0 && (
+            {errors.length > 0 && (
             <div className="bg-red-100 text-red-700 rounded p-3 mt-4">
               <ul className="list-disc pl-5">
                 {errors.map((err, i) => <li key={i}>{err}</li>)}
@@ -268,23 +267,25 @@ export default function EstimatorPage() {
               </table>
             </div>
           )}
-          <div className="mt-8 text-xs text-muted-foreground">
-            <ul className="list-disc pl-5 space-y-1">
-              <li>This is only an <i>estimate</i> of your new rating.</li>
-              <li>Your final rating may differ for many reasons but especially if you played provisionally rated or unrated opponents.</li>
-              <li>
-                Calculations are based on section 414 of the CFC Handbook. See{" "}
-                <a
-                  href="https://www.chess.ca/en/cfc/rules/cfc-handbook-2014/#section-4---cfc-rating-system--fide-rated-events"
-                  className="underline text-blue-600"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LINK
-                </a>.
-              </li>
-            </ul>
-          </div>
+            <div className="ml-4 mt-4 text-xs text-muted-foreground">
+                <ul className="list-disc pl-5 space-y-1">
+                <li>This is only an <i>estimate</i> of your new rating.</li>
+                <li>Your final rating may differ for many reasons but especially if you played provisionally rated or unrated opponents.</li>
+                <li>
+                    Calculations are based on section 414 of the CFC Handbook. See{" "}
+                    <a
+                    href="https://www.chess.ca/en/cfc/rules/cfc-handbook-2014/#section-4---cfc-rating-system--fide-rated-events"
+                    className="underline text-blue-600"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >
+                    LINK
+                    </a>.
+                </li>
+                </ul>
+            </div>
+          </form>
+          
         </CardContent>
       </Card>
       <p className="text-sm text-muted-foreground text-center mt-4">
