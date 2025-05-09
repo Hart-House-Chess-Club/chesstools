@@ -4,6 +4,25 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+import {
+  Table,
+  TableBody,
+//   TableCaption,
+  TableCell,
+//   TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+ 
 
 // Add rating system toggle
 const RATING_SYSTEMS = [
@@ -282,15 +301,21 @@ export default function EstimatorPage() {
               {ratingSystem === 'fide' && (
                 <div className="flex-1 min-w-[180px] mb-4">
                   <label className="block text-sm font-medium mb-1">K-factor:</label>
-                  <select
-                    className="input input-bordered w-full mt-1"
-                    value={kFide}
-                    onChange={e => setKFide(Number(e.target.value))}
-                  >
-                    <option value={40}>40 (new players, &lt;30 games)</option>
-                    <option value={20}>20 (active, &lt;2400)</option>
-                    <option value={10}>10 (≥2400 and established)</option>
-                  </select>
+                 <div>
+                    <Select
+                      value={kFide.toString()}
+                      onValueChange={(value) => setKFide(Number(value))}
+                    >
+                      <SelectTrigger className="w-24">
+                        <SelectValue placeholder="K-factor" />
+                      </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="40">40 (new players, &lt;30 games)</SelectItem>
+                        <SelectItem value="20">20 (active, &lt;2400)</SelectItem>
+                        <SelectItem value="10">10 (≥2400 and established)</SelectItem>
+                        </SelectContent>
+                    </Select>
+                 </div>
                   <div className="text-xs text-muted-foreground">
                     Choose the K-factor appropriate for your FIDE status.
                   </div>
@@ -300,15 +325,15 @@ export default function EstimatorPage() {
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Your opponent ratings:</label>
               <Textarea
-                className="textarea textarea-bordered w-full mt-1"
+                className="w-full mt-1"
                 rows={2}
                 value={rOthers}
                 onChange={e => setROthers(e.target.value)}
-                placeholder="e.g. 1800 1700 1600"
+                placeholder={ratingSystem==='fide' ? "e.g. +1800 -1700 =1600" : "e.g. 1800 1700 1600"}
               />
               <div className="text-xs text-muted-foreground">
                 {ratingSystem === 'fide'
-                  ? "Enter ratings as +2000 -1000 =2320 or just numbers (space/comma separated)."
+                  ? "Enter ratings as +2000 -1000 =2320 with + wins, - losses, = draws."
                   : "Enter just their ratings (separated by spaces or commas)"}
               </div>
             </div>
@@ -339,7 +364,7 @@ export default function EstimatorPage() {
               </div>
               <Button
                 type="submit"
-                className="btn btn-primary ml-2"
+                className="btn mb-4 secondary ml-2"
               >
                 Estimate
               </Button>
@@ -396,37 +421,41 @@ export default function EstimatorPage() {
               </div>
             )}
             {results && ratingSystem === 'fide' && (
-              <div className="mt-6">
-                <div className="mb-2 font-semibold">FIDE per-game calculation:</div>
-                <table className="table-auto w-full text-sm ratings-calc">
-                  <thead>
-                    <tr>
-                      <th className="text-right">Game</th>
-                      <th className="text-right">Old</th>
-                      <th className="text-right">Opponent</th>
-                      <th className="text-right">Expected</th>
-                      <th className="text-right">Actual</th>
-                      <th className="text-right">New</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {fideBreakdown.map((row, i) => (
-                      <tr key={i}>
-                        <td className="text-right">{row.game}</td>
-                        <td className="text-right">{row.rOld}</td>
-                        <td className="text-right">{row.opponent}</td>
-                        <td className="text-right">{row.expected}</td>
-                        <td className="text-right">{row.actual}</td>
-                        <td className="text-right">{row.rNew}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="mt-2 text-sm">
-                  <b>Final FIDE rating:</b> {results.rNew} ({results.delta > 0 ? "+" : ""}{results.delta})<br />
-                  <b>Total expected score:</b> {results.totalExpected}
+                <div className="mt-6">
+                    <div className="mb-2 font-semibold">FIDE per-game calculation:</div>
+                    <div className="mb-4 rounded-md border">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="text-right">Game</TableHead>
+                                    <TableHead className="text-right">Old</TableHead>
+                                    <TableHead className="text-right">Opponent</TableHead>
+                                    <TableHead className="text-right">Expected Win %</TableHead>
+                                    <TableHead className="text-right">Result</TableHead>
+                                    <TableHead className="text-right">New</TableHead>
+                                    <TableHead className="text-right">Change</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {fideBreakdown.map((row, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell className="text-center">{row.game}</TableCell>
+                                        <TableCell className="text-center">{row.rOld}</TableCell>
+                                        <TableCell className="text-center">{row.opponent}</TableCell>
+                                        <TableCell className="text-center">{row.expected}</TableCell>
+                                        <TableCell className="text-center">{row.actual}</TableCell>
+                                        <TableCell className="text-center">{row.rNew}</TableCell>
+                                        <TableCell className="text-center">{row.rNew - row.rOld}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+                    <div className="m-6 text-sm">
+                        <b>Final FIDE rating:</b> {results.rNew} ({results.delta > 0 ? "+" : ""}{results.delta})<br />
+                        <b>Total expected score:</b> {results.totalExpected}
+                    </div>
                 </div>
-              </div>
             )}
             <div className="ml-4 mt-4 text-xs text-muted-foreground">
               <ul className="list-disc pl-5 space-y-1">
