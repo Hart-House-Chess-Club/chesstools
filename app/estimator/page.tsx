@@ -364,7 +364,8 @@ export default function EstimatorPage() {
               </div>
               <Button
                 type="submit"
-                className="btn mb-4 secondary ml-2"
+                variant="secondary"
+                className="mb-4 ml-2"
               >
                 Estimate
               </Button>
