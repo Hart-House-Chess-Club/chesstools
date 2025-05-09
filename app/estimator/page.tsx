@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+// Add rating system toggle
+const RATING_SYSTEMS = [
+  { key: "cfc", label: "Canadian (CFC)" },
+  { key: "fide", label: "FIDE" },
+];
+
 function validateInput(
   rOld: number,
   rHigh: number,
@@ -34,7 +40,7 @@ function validateInput(
   return errs;
 }
 
-function calcExpectedResult(rPlayer: number, rOpponent: number): number {
+function calcExpectedResultCFC(rPlayer: number, rOpponent: number): number {
   const diffToExpected = [
     [0, 3, 0.5, 0.5], [4, 10, 0.51, 0.49], [11, 17, 0.52, 0.48], [18, 25, 0.53, 0.47],
     [26, 32, 0.54, 0.46], [33, 39, 0.55, 0.45], [40, 46, 0.56, 0.44], [47, 53, 0.57, 0.43],
@@ -59,7 +65,23 @@ function calcExpectedResult(rPlayer: number, rOpponent: number): number {
   return rPlayer > rOpponent ? 1.0 : 0.0;
 }
 
-function estimateRating(
+function calcExpectedResultFIDE(rPlayer: number, rOpponent: number): number {
+  // FIDE expected score formula
+  return 1 / (1 + Math.pow(10, (rOpponent - rPlayer) / 400));
+}
+
+// Helper to parse FIDE input like '+2000 -1000 =2320'
+function parseFideOpponents(input: string) {
+  // Matches: +2000, -1000, =2320, 2100, etc.
+  const regex = /([+=-]?)(\d{3,4})/g;
+  const matches = Array.from(input.matchAll(regex));
+  return matches.map(([_, result, rating]) => ({
+    result: result || '',
+    rating: parseInt(rating, 10)
+  }));
+}
+
+function estimateRatingCFC(
   rOld: number,
   rHigh: number,
   rOthers: string,
@@ -67,7 +89,7 @@ function estimateRating(
 ) {
   const rOpponents = rOthers.match(/\d+/g)?.map(Number) ?? [];
   const games = rOpponents.length;
-  const expected = rOpponents.map((r) => calcExpectedResult(rOld, r));
+  const expected = rOpponents.map((r) => calcExpectedResultCFC(rOld, r));
   const expectedScore = expected.reduce((tot, val) => tot + val, 0.0);
   const k = rOld >= 2199 ? 16 : 32;
   let rNew = rOld + k * (score - expectedScore);
@@ -113,12 +135,46 @@ function estimateRating(
   };
 }
 
+function estimateRatingFIDE(
+  rOld: number,
+  rHigh: number,
+  rOthers: string,
+  score: number
+) {
+  const rOpponents = rOthers.match(/\d+/g)?.map(Number) ?? [];
+  const games = rOpponents.length;
+  const expected = rOpponents.map((r) => calcExpectedResultFIDE(rOld, r));
+  const expectedScore = expected.reduce((tot, val) => tot + val, 0.0);
+  // FIDE K-factor logic
+  let k = 20;
+  if (rOld < 2400) k = 20;
+  if (rOld < 2300 && games < 30) k = 40;
+  if (rOld >= 2400) k = 10;
+  let rNew = rOld + k * (score - expectedScore);
+  // Performance rating (FIDE)
+  const rOppAvg = rOpponents.reduce((tot, r) => tot + r, 0) / games;
+  const winsMinusLosses = score - (games - score);
+  const rPerf = Math.round(rOppAvg + 400 * (winsMinusLosses) / games);
+  rNew = Math.round(rNew);
+  return {
+    rPerf,
+    rBeforeBonus: rNew, // FIDE has no bonus
+    bonusReg: 0,
+    bonusLife: 0,
+    rNew,
+    delta: rNew - rOld,
+  };
+}
+
 export default function EstimatorPage() {
+  const [ratingSystem, setRatingSystem] = useState<'cfc' | 'fide'>('cfc');
   const [rOld, setROld] = useState<number>(1500);
   const [rHigh, setRHigh] = useState<number>(3000);
   const [rOthers, setROthers] = useState<string>("");
   const [score, setScore] = useState<number>(0);
-  const [results, setResults] = useState<ReturnType<typeof estimateRating> | null>(null);
+  const [kFide, setKFide] = useState<number>(20); // FIDE K-factor
+  const [results, setResults] = useState<any>(null);
+  const [fideBreakdown, setFideBreakdown] = useState<any[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const games = rOthers.match(/\d+/g)?.length ?? 0;
 
@@ -128,34 +184,88 @@ export default function EstimatorPage() {
     if (errs.length > 0) {
       setErrors(errs);
       setResults(null);
+      setFideBreakdown([]);
       return;
     }
     setErrors([]);
-    setResults(estimateRating(rOld, rHigh, rOthers, score));
+    if (ratingSystem === 'cfc') {
+      setResults(estimateRatingCFC(rOld, rHigh, rOthers, score));
+      setFideBreakdown([]);
+    } else {
+      // FIDE: parse input for per-game results
+      const opps = parseFideOpponents(rOthers);
+      let rCurrent = rOld;
+      const breakdown = [];
+      let totalExpected = 0;
+      let totalScore = 0;
+      for (let i = 0; i < opps.length; ++i) {
+        const opp = opps[i];
+        const expected = calcExpectedResultFIDE(rCurrent, opp.rating);
+        let actual = 0;
+        if (opp.result === '+') actual = 1;
+        else if (opp.result === '=') actual = 0.5;
+        else if (opp.result === '-') actual = 0;
+        else actual = i < score ? 1 : 0; // fallback for plain numbers
+        const rNew = rCurrent + kFide * (actual - expected);
+        breakdown.push({
+          game: i + 1,
+          rOld: Math.round(rCurrent),
+          opponent: opp.rating,
+          expected: expected.toFixed(2),
+          actual,
+          rNew: Math.round(rNew),
+        });
+        rCurrent = rNew;
+        totalExpected += expected;
+        totalScore += actual;
+      }
+      setFideBreakdown(breakdown);
+      setResults({
+        rPerf: null,
+        rBeforeBonus: null,
+        bonusReg: 0,
+        bonusLife: 0,
+        rNew: Math.round(rCurrent),
+        delta: Math.round(rCurrent) - rOld,
+        totalExpected: totalExpected.toFixed(2),
+        totalScore,
+      });
+    }
   }
 
   return (
     <div className="max-w-2xl mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Canadian Ratings Estimator</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">{ratingSystem === 'cfc' ? 'Canadian Ratings Estimator' : 'FIDE Ratings Estimator'}</h1>
+      <div className="flex justify-center mb-4 gap-2">
+        {RATING_SYSTEMS.map((sys) => (
+          <Button
+            key={sys.key}
+            type="button"
+            variant={ratingSystem === sys.key ? "default" : "outline"}
+            onClick={() => setRatingSystem(sys.key as 'cfc' | 'fide')}
+          >
+            {sys.label}
+          </Button>
+        ))}
+      </div>
       <Card>
         <CardContent className="py-6">
           <form className="space-y-4 p-6" onSubmit={handleEstimate}>
             <div className="flex flex-wrap gap-4 mb-4">
               <div className="flex-1 min-w-[180px] mb-4">
-                <label className="block text-sm font-medium mb-1"> </label>
-                  Your current rating:
-                  <Input
-                    className="input input-bordered w-full mt-1"
-                    type="number"
-                    min={200}
-                    max={3000}
-                    value={rOld}
-                    onChange={e => setROld(Number(e.target.value))}
-                  />
+                <label className="block text-sm font-medium mb-1">Your current rating:</label>
+                <Input
+                  className="input input-bordered w-full mt-1"
+                  type="number"
+                  min={200}
+                  max={3000}
+                  value={rOld}
+                  onChange={e => setROld(Number(e.target.value))}
+                />
               </div>
-              <div className="flex-1 min-w-[180px] mb-4">
-                <label className="block text-sm font-medium mb-1"></label>
-                  Your lifetime highest rating:
+              {ratingSystem === 'cfc' && (
+                <div className="flex-1 min-w-[180px] mb-4">
+                  <label className="block text-sm font-medium mb-1">Your lifetime highest rating:</label>
                   <Input
                     className="input input-bordered w-full mt-1"
                     type="number"
@@ -164,50 +274,68 @@ export default function EstimatorPage() {
                     value={rHigh}
                     onChange={e => setRHigh(Number(e.target.value))}
                   />
-                <div className="text-xs text-muted-foreground">
-                  If unknown, set to a high number (3000).
+                  <div className="text-xs text-muted-foreground">
+                    If unknown, set to a high number (3000).
+                  </div>
                 </div>
-              </div>
+              )}
+              {ratingSystem === 'fide' && (
+                <div className="flex-1 min-w-[180px] mb-4">
+                  <label className="block text-sm font-medium mb-1">K-factor:</label>
+                  <select
+                    className="input input-bordered w-full mt-1"
+                    value={kFide}
+                    onChange={e => setKFide(Number(e.target.value))}
+                  >
+                    <option value={40}>40 (new players, &lt;30 games)</option>
+                    <option value={20}>20 (active, &lt;2400)</option>
+                    <option value={10}>10 (≥2400 and established)</option>
+                  </select>
+                  <div className="text-xs text-muted-foreground">
+                    Choose the K-factor appropriate for your FIDE status.
+                  </div>
+                </div>
+              )}
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-1"></label>
-                Your opponent ratings:
-                <Textarea
-                  className="textarea textarea-bordered w-full mt-1"
-                  rows={2}
-                  value={rOthers}
-                  onChange={e => setROthers(e.target.value)}
-                  placeholder="e.g. 1800 1700 1600"
-                />
+              <label className="block text-sm font-medium mb-1">Your opponent ratings:</label>
+              <Textarea
+                className="textarea textarea-bordered w-full mt-1"
+                rows={2}
+                value={rOthers}
+                onChange={e => setROthers(e.target.value)}
+                placeholder="e.g. 1800 1700 1600"
+              />
               <div className="text-xs text-muted-foreground">
-                Enter just their ratings (separated by spaces or commas)
+                {ratingSystem === 'fide'
+                  ? "Enter ratings as +2000 -1000 =2320 or just numbers (space/comma separated)."
+                  : "Enter just their ratings (separated by spaces or commas)"}
               </div>
             </div>
             <div className="flex flex-wrap gap-4 items-end mb-4">
+
+                {ratingSystem === 'cfc' && (
+                <div className="mb-4">
+                            Your score:
+                            <Input
+                            className="input input-bordered w-24 mt-1"
+                            type="number"
+                            min={0}
+                            max={games}
+                            step={0.5}
+                            value={score}
+                            onChange={e => setScore(Number(e.target.value))}
+                            />
+                        </div>
+               )}
               <div className="mb-4">
-                {/* <label className="block text-sm font-medium mb-1"> */}
-                  Your score:
-                  <Input
-                    className="input input-bordered w-24 mt-1"
-                    type="number"
-                    min={0}
-                    max={games}
-                    step={0.5}
-                    value={score}
-                    onChange={e => setScore(Number(e.target.value))}
-                  />
-                {/* </label> */}
-              </div>
-              <div className="mb-4">
-                {/* <label className="block text-sm font-medium mb-1"> */}
-                  Games played:
-                  <Input
-                    className="input input-bordered w-20 mt-1"
-                    type="text"
-                    value={games}
-                    disabled
-                  />
-                {/* </label> */}
+                Games played:
+                <Input
+                  className="input input-bordered w-20 mt-1"
+                  type="text"
+                  value={games}
+                  disabled
+                />
               </div>
               <Button
                 type="submit"
@@ -217,79 +345,123 @@ export default function EstimatorPage() {
               </Button>
             </div>
             {errors.length > 0 && (
-            <div className="bg-red-100 text-red-700 rounded p-3 mt-4">
-              <ul className="list-disc pl-5">
-                {errors.map((err, i) => <li key={i}>{err}</li>)}
-              </ul>
-            </div>
-          )}
-          {results && (
-            <div className="mt-6">
-              <table className="table-auto w-full text-sm ratings-calc">
-                <tbody>
-                  <tr>
-                    <td className="font-semibold text-right w-1/3">{score} / {games}</td>
-                    <td>Your score</td>
-                  </tr>
-                  <tr>
-                    <td className="font-semibold text-right">{results.rPerf}</td>
-                    <td>Your performance rating</td>
-                  </tr>
-                  {results.bonusReg > 0 || results.bonusLife > 0 ? (
+              <div className="bg-red-100 text-red-700 rounded p-3 mt-4">
+                <ul className="list-disc pl-5">
+                  {errors.map((err, i) => <li key={i}>{err}</li>)}
+                </ul>
+              </div>
+            )}
+            {results && ratingSystem === 'cfc' && (
+              <div className="mt-6">
+                <table className="table-auto w-full text-sm ratings-calc">
+                  <tbody>
                     <tr>
-                      <td className="font-semibold text-right">{results.rBeforeBonus}</td>
-                      <td>Your <i>estimated</i> new rating <i>before bonuses</i></td>
+                      <td className="font-semibold text-right w-1/3">{score} / {games}</td>
+                      <td>Your score</td>
                     </tr>
-                  ) : null}
-                  {results.bonusReg > 0 && (
                     <tr>
-                      <td className="font-semibold text-right">{results.bonusReg}</td>
-                      <td>Regular bonus points</td>
+                      <td className="font-semibold text-right">{results.rPerf}</td>
+                      <td>Your performance rating</td>
                     </tr>
-                  )}
-                  {results.bonusLife > 0 && (
+                    {results.bonusReg > 0 || results.bonusLife > 0 ? (
+                      <tr>
+                        <td className="font-semibold text-right">{results.rBeforeBonus}</td>
+                        <td>Your <i>estimated</i> new rating <i>before bonuses</i></td>
+                      </tr>
+                    ) : null}
+                    {results.bonusReg > 0 && (
+                      <tr>
+                        <td className="font-semibold text-right">{results.bonusReg}</td>
+                        <td>Regular bonus points</td>
+                      </tr>
+                    )}
+                    {results.bonusLife > 0 && (
+                      <tr>
+                        <td className="font-semibold text-right">{results.bonusLife}</td>
+                        <td>Lifetime high bonus points</td>
+                      </tr>
+                    )}
+                    <tr className="bg-green-100">
+                      <td className="font-semibold text-right">{results.rNew}</td>
+                      <td>Your <i>estimated</i> new rating</td>
+                    </tr>
                     <tr>
-                      <td className="font-semibold text-right">{results.bonusLife}</td>
-                      <td>Lifetime high bonus points</td>
+                      <td className="text-right text-xs">
+                        ({results.delta > 0 ? "+" : ""}{results.delta})
+                      </td>
+                      <td></td>
                     </tr>
-                  )}
-                  <tr className="bg-green-100">
-                    <td className="font-semibold text-right">{results.rNew}</td>
-                    <td>Your <i>estimated</i> new rating</td>
-                  </tr>
-                  <tr>
-                    <td className="text-right text-xs">
-                      ({results.delta > 0 ? "+" : ""}{results.delta})
-                    </td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {results && ratingSystem === 'fide' && (
+              <div className="mt-6">
+                <div className="mb-2 font-semibold">FIDE per-game calculation:</div>
+                <table className="table-auto w-full text-sm ratings-calc">
+                  <thead>
+                    <tr>
+                      <th className="text-right">Game</th>
+                      <th className="text-right">Old</th>
+                      <th className="text-right">Opponent</th>
+                      <th className="text-right">Expected</th>
+                      <th className="text-right">Actual</th>
+                      <th className="text-right">New</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fideBreakdown.map((row, i) => (
+                      <tr key={i}>
+                        <td className="text-right">{row.game}</td>
+                        <td className="text-right">{row.rOld}</td>
+                        <td className="text-right">{row.opponent}</td>
+                        <td className="text-right">{row.expected}</td>
+                        <td className="text-right">{row.actual}</td>
+                        <td className="text-right">{row.rNew}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="mt-2 text-sm">
+                  <b>Final FIDE rating:</b> {results.rNew} ({results.delta > 0 ? "+" : ""}{results.delta})<br />
+                  <b>Total expected score:</b> {results.totalExpected}
+                </div>
+              </div>
+            )}
             <div className="ml-4 mt-4 text-xs text-muted-foreground">
-                <ul className="list-disc pl-5 space-y-1">
+              <ul className="list-disc pl-5 space-y-1">
                 <li>This is only an <i>estimate</i> of your new rating.</li>
                 <li>Your final rating may differ for many reasons but especially if you played provisionally rated or unrated opponents.</li>
                 <li>
-                    Calculations are based on section 414 of the CFC Handbook. See{" "}
+                  {ratingSystem === 'cfc' ? (
+                    <>Calculations are based on section 414 of the CFC Handbook. See{" "}
                     <a
-                    href="https://www.chess.ca/en/cfc/rules/cfc-handbook-2014/#section-4---cfc-rating-system--fide-rated-events"
-                    className="underline text-blue-600"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                      href="https://www.chess.ca/en/cfc/rules/cfc-handbook-2014/#section-4---cfc-rating-system--fide-rated-events"
+                      className="underline text-blue-600"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                    LINK
-                    </a>.
+                      LINK
+                    </a>.</>
+                  ) : (
+                    <>FIDE rating calculations use the official FIDE formula. See{" "}
+                    <a
+                      href="https://handbook.fide.com/chapter/B022024"
+                      className="underline text-blue-600"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      FIDE Handbook
+                    </a>.</>
+                  )}
                 </li>
-                </ul>
+              </ul>
             </div>
           </form>
-          
         </CardContent>
       </Card>
       <p className="text-sm text-muted-foreground text-center mt-4">
-        Estimate your new chess rating based on your results and opponents. Powered by CFC formulas.
+        Estimate your new {ratingSystem === 'cfc' ? 'Canadian Chess Federation' : 'FIDE'} rating based on your results and opponents.
       </p>
     </div>
   );
