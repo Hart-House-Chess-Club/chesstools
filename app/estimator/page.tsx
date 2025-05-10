@@ -94,10 +94,21 @@ function parseFideOpponents(input: string) {
   // Matches: +2000, -1000, =2320, 2100, etc.
   const regex = /([+=-]?)(\d{3,4})/g;
   const matches = Array.from(input.matchAll(regex));
-  return matches.map(([_, result, rating]) => ({
+  return matches.map(([, result, rating]) => ({
     result: result || '',
     rating: parseInt(rating, 10)
   }));
+}
+
+interface RatingResult {
+  rPerf: number | null;
+  rBeforeBonus: number | null;
+  bonusReg: number;
+  bonusLife: number;
+  rNew: number;
+  delta: number;
+  totalExpected?: string;
+  totalScore?: number;
 }
 
 function estimateRatingCFC(
@@ -105,7 +116,7 @@ function estimateRatingCFC(
   rHigh: number,
   rOthers: string,
   score: number
-) {
+): RatingResult {
   const rOpponents = rOthers.match(/\d+/g)?.map(Number) ?? [];
   const games = rOpponents.length;
   const expected = rOpponents.map((r) => calcExpectedResultCFC(rOld, r));
@@ -150,38 +161,7 @@ function estimateRatingCFC(
     bonusReg,
     bonusLife,
     rNew,
-    delta: rNew - rOld,
-  };
-}
-
-function estimateRatingFIDE(
-  rOld: number,
-  rHigh: number,
-  rOthers: string,
-  score: number
-) {
-  const rOpponents = rOthers.match(/\d+/g)?.map(Number) ?? [];
-  const games = rOpponents.length;
-  const expected = rOpponents.map((r) => calcExpectedResultFIDE(rOld, r));
-  const expectedScore = expected.reduce((tot, val) => tot + val, 0.0);
-  // FIDE K-factor logic
-  let k = 20;
-  if (rOld < 2400) k = 20;
-  if (rOld < 2300 && games < 30) k = 40;
-  if (rOld >= 2400) k = 10;
-  let rNew = rOld + k * (score - expectedScore);
-  // Performance rating (FIDE)
-  const rOppAvg = rOpponents.reduce((tot, r) => tot + r, 0) / games;
-  const winsMinusLosses = score - (games - score);
-  const rPerf = Math.round(rOppAvg + 400 * (winsMinusLosses) / games);
-  rNew = Math.round(rNew);
-  return {
-    rPerf,
-    rBeforeBonus: rNew, // FIDE has no bonus
-    bonusReg: 0,
-    bonusLife: 0,
-    rNew,
-    delta: rNew - rOld,
+    delta: rNew - rOld
   };
 }
 
@@ -192,8 +172,15 @@ export default function EstimatorPage() {
   const [rOthers, setROthers] = useState<string>("");
   const [score, setScore] = useState<number>(0);
   const [kFide, setKFide] = useState<number>(20); // FIDE K-factor
-  const [results, setResults] = useState<any>(null);
-  const [fideBreakdown, setFideBreakdown] = useState<any[]>([]);
+  const [results, setResults] = useState<RatingResult | null>(null);
+  const [fideBreakdown, setFideBreakdown] = useState<{
+    game: number;
+    rOld: number;
+    opponent: number;
+    expected: string;
+    actual: number;
+    rNew: number;
+  }[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const games = rOthers.match(/\d+/g)?.length ?? 0;
 
