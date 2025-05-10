@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
@@ -40,7 +40,7 @@ export default function PlayStockfishPage() {
     // Set skill level
     setTimeout(() => {
       // Stockfish skill level: 0-20
-      stockfish.worker?.postMessage(`setoption name Skill Level value ${level}`);
+      stockfish.evaluatePosition(`setoption name Skill Level value ${level}`);
     }, 200);
     // eslint-disable-next-line
   }, [level]);
@@ -52,9 +52,9 @@ export default function PlayStockfishPage() {
     stockfish.onMessage((msg) => {
       if (msg.bestMove) {
         const move = {
-          from: msg.bestMove.slice(0, 2),
-          to: msg.bestMove.slice(2, 4),
-          promotion: "q",
+          from: msg.bestMove.slice(0, 2) as Square,
+          to: msg.bestMove.slice(2, 4) as Square,
+          promotion: "q" as "q" | "n" | "b" | "r" | undefined,
         };
         const moveResult = game.move(move);
         if (moveResult) {
