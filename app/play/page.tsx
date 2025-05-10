@@ -13,12 +13,12 @@ const Chessboard = dynamic(
 );
 
 const LEVELS = [
-  { label: "Beginner", skill: 1 },
-  { label: "Easy", skill: 3 },
-  { label: "Intermediate", skill: 6 },
-  { label: "Advanced", skill: 10 },
-  { label: "Master", skill: 15 },
-  { label: "Maximum", skill: 20 },
+  { label: "Beginner", skill: 1, elo: "~800" },
+  { label: "Easy", skill: 3, elo: "~1100" },
+  { label: "Intermediate", skill: 6, elo: "~1400" },
+  { label: "Advanced", skill: 10, elo: "~1800" },
+  { label: "Master", skill: 15, elo: "~2200" },
+  { label: "Maximum", skill: 20, elo: "~2600+" },
 ];
 
 export default function PlayStockfishPage() {
@@ -103,7 +103,7 @@ export default function PlayStockfishPage() {
             onClick={() => setLevel(l.skill)}
             type="button"
           >
-            {l.label}
+            {l.label} <span className="ml-1 text-xs opacity-70">{l.elo}</span>
           </Button>
         ))}
       </div>
