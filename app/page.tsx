@@ -21,7 +21,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
             <div className="flex-1 text-center md:text-left">
               <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
-                Welcome to <span className="text-primary">ChessTools.org</span>
+                Welcome to <span className="text-primary">chesstools.org</span>
               </h1>
               <p className="text-xl mb-8 text-muted-foreground max-w-2xl">
                 Powerful tools for chess players, coaches, and tournament organizers to analyze, visualize, and improve
