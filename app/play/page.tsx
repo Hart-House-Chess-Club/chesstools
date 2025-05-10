@@ -40,10 +40,7 @@ export default function PlayStockfishPage() {
     setMoveHistory([]);
     stockfish.init();
     // Set skill level
-    setTimeout(() => {
-      // Stockfish skill level: 0-20
-      stockfish.evaluatePosition(`setoption name Skill Level value ${level}`);
-    }, 200);
+    stockfish.evaluatePosition(newGame.fen(), level);
     // eslint-disable-next-line
   }, [level]);
 
