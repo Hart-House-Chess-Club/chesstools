@@ -53,7 +53,7 @@ const Navbar = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/play-random" legacyBehavior passHref>
+                <Link href="/play" legacyBehavior passHref>
                   <NavigationMenuLink
                     className={cn(
                       navigationMenuTriggerStyle(),
@@ -94,11 +94,14 @@ const Navbar = () => {
               <Link href="/board" className="text-lg font-medium">
                 Board
               </Link>
-              <Link href="/play-random" className="text-lg font-medium">
+              <Link href="/play" className="text-lg font-medium">
                 Play
               </Link>
               <Link href="/analysis" className="text-lg font-medium">
                 Analysis
+              </Link>
+              <Link href="/estimator" className="text-lg font-medium">
+                Ratings Estimator
               </Link>
               <Link href="/generator" className="text-lg font-medium">
                 Board Generator

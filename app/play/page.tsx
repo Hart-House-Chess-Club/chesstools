@@ -27,6 +27,7 @@ export default function PlayStockfishPage() {
   const [fen, setFen] = useState(game.fen());
   const [waiting, setWaiting] = useState(false);
   const [status, setStatus] = useState<string>("");
+  const [moveHistory, setMoveHistory] = useState<string[]>([]);
   const stockfish = useStockfish();
 
   // Reset game and Stockfish on level change
@@ -36,6 +37,7 @@ export default function PlayStockfishPage() {
     setFen(newGame.fen());
     setStatus("");
     setWaiting(false);
+    setMoveHistory([]);
     stockfish.init();
     // Set skill level
     setTimeout(() => {
@@ -60,6 +62,8 @@ export default function PlayStockfishPage() {
         if (moveResult) {
           setGame(new Chess(game.fen()));
           setFen(game.fen());
+          // Save position to history
+          setMoveHistory([...moveHistory, game.fen()]);
         }
         setWaiting(false);
         if (game.game_over()) setStatus("Game over");
@@ -76,6 +80,10 @@ export default function PlayStockfishPage() {
       promotion: "q",
     });
     if (move === null) return false;
+    
+    // Save current position to history before Stockfish responds
+    setMoveHistory([...moveHistory, game.fen()]);
+    
     setGame(new Chess(game.fen()));
     setFen(game.fen());
     setTimeout(() => makeStockfishMove(), 400);
@@ -90,6 +98,30 @@ export default function PlayStockfishPage() {
     setFen(newGame.fen());
     setStatus("");
     setWaiting(false);
+    setMoveHistory([]);
+  }
+
+  // Take back last move (both player's move and computer's response)
+  function handleTakeback() {
+    if (waiting || moveHistory.length < 1) return;
+    
+    // Get the position before the last move pair
+    let targetPosition;
+    if (moveHistory.length >= 2) {
+      // Take back both computer and player moves
+      targetPosition = moveHistory[moveHistory.length - 2];
+      setMoveHistory(moveHistory.slice(0, -2));
+    } else {
+      // Only the player has moved, go back to start
+      targetPosition = new Chess().fen();
+      setMoveHistory([]);
+    }
+    
+    // Set the board to that position
+    const newGame = new Chess(targetPosition);
+    setGame(newGame);
+    setFen(newGame.fen());
+    setStatus("");
   }
 
   return (
@@ -116,6 +148,13 @@ export default function PlayStockfishPage() {
           </div>
           <div className="flex justify-center gap-4">
             <Button variant="outline" onClick={handleReset}>Reset</Button>
+            <Button 
+              variant="outline" 
+              onClick={handleTakeback}
+              disabled={waiting || moveHistory.length < 1}
+            >
+              Take Back
+            </Button>
           </div>
           <p className="text-sm text-muted-foreground text-center">
             Play against Stockfish at different levels. The higher the level, the stronger the play.
