@@ -45,6 +45,9 @@ const Navbar = () => {
                     <ListItem href="/analysis" title="Analysis">
                       Analyze games with Stockfish
                     </ListItem>
+                    <ListItem href="/estimator" title="Ratings Estimator">
+                      Estimate ratings with FIDE and CFC
+                    </ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
