@@ -71,19 +71,19 @@ export default function AboutPage() {
               <ul className="space-y-2">
                 <li className="flex items-start">
                   <span className="text-green-600 mr-2">♟️</span>
-                  Built by Executives of the Hart House Chess Club at the University of Toronto
+                  Built by experienced chess players and developers. 
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 mr-2">♟️</span>
-                  Open-source project with no profit motive
+                  Open-source project with no profit motive.
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 mr-2">♟️</span>
-                  Dedicated to advancing chess technology and accessibility
+                  Dedicated to advancing chess technology and accessibility for the world.
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 mr-2">♟️</span>
-                  Community-driven with welcome contributions
+                  Community-driven with welcome contributions.
                 </li>
               </ul>
             </CardContent>
@@ -94,7 +94,7 @@ export default function AboutPage() {
         <Card className="w-full overflow-hidden mb-12 border border-gray-200 dark:border-gray-800">
           <div className="relative aspect-video w-full">
             <Image 
-              src="/fullboard.png" 
+              src="/images/toronto-rapid.jpg" 
               alt="Chess board visualization" 
               fill 
               className="object-cover transition-transform hover:scale-[1.02] duration-700"

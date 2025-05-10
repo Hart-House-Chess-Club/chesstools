@@ -29,10 +29,16 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                 <Button size="lg" asChild>
-                  <Link href="/board">Interactive Board</Link>
+                  <Link href="/board">Create Games</Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <Link href="/generator">FEN to PNG</Link>
+                  <Link href="/generator">Convert FEN to PNG</Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <Link href="/analysis">Analyze Games</Link>
+                </Button>
+                <Button size="lg" asChild>
+                  <Link href="/estimator">Estimate Ratings</Link>
                 </Button>
               </div>
             </div>
@@ -122,31 +128,62 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Featured Image Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-8">Chess Community</h2>
-            <div className="relative rounded-xl overflow-hidden shadow-xl">
-              <Image
-                src="/gh.jpg"
-                alt="Chess Tournament in Toronto"
-                width={800}
-                height={500}
-                className="w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                <div className="p-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">From Toronto, ON</h3>
-                  <p className="text-white/80">Bringing together chess enthusiasts from all skill levels</p>
+            <div className="flex flex-row gap-6 justify-center items-stretch">
+              <div className="relative rounded-xl overflow-hidden shadow-xl flex-1 min-w-0">
+                <Image
+                  src="/images/gh.jpg"
+                  alt="Chess Tournament in Toronto"
+                  width={800}
+                  height={500}
+                  className="w-full h-auto"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                  <div className="p-4 text-white">
+                    <h3 className="text-xl font-bold mb-1">Supporting Chess Tournaments Worldwide</h3>
+                    <p className="text-white/80 text-sm">Pushing the standard of chess events worldwide</p>
+                  </div>
+                </div>
+              </div>
+              <div className="relative rounded-xl overflow-hidden shadow-xl flex-1 min-w-0">
+                <Image
+                  src="/images/touch-move.jpg"
+                  alt="Chess players analyzing"
+                  width={800}
+                  height={500}
+                  className="w-full h-auto"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                  <div className="p-4 text-white">
+                    <h3 className="text-xl font-bold mb-1">Improving Analysis of Games</h3>
+                    <p className="text-white/80 text-sm">Helping each other learn together</p>
+                  </div>
+                </div>
+              </div>
+              <div className="relative rounded-xl overflow-hidden shadow-xl flex-1 min-w-0">
+                <Image
+                  src="/images/chess-zoom.jpg"
+                  alt="Zoomed image of chess board"
+                  width={800}
+                  height={500}
+                  className="w-full h-auto"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                  <div className="p-4 text-white">
+                    <h3 className="text-xl font-bold mb-1">Expanding Chess Technology</h3>
+                    <p className="text-white/80 text-sm">For players of all skill levels</p>
+                  </div>
                 </div>
               </div>
             </div>
+            <p className="text-center mt-6 text-muted-foreground">Bringing together chess enthusiasts from Toronto and beyond</p>
           </div>
         </div>
       </section>
-
       {/* Call to Action */}
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
@@ -162,4 +199,3 @@ export default function Home() {
     </main>
   )
 }
-
