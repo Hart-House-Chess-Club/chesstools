@@ -39,16 +39,15 @@ export default function PlayStockfishPage() {
     setWaiting(false);
     setMoveHistory([]);
     stockfish.init();
-    
-    // Set skill level properly
-    stockfish.evaluatePosition(game.fen(), level);
+    // Set skill level
+    stockfish.evaluatePosition(newGame.fen(), level);
     // eslint-disable-next-line
   }, [level]);
 
   // Stockfish move handler
   const makeStockfishMove = () => {
     setWaiting(true);
-    stockfish.evaluatePosition(game.fen(), level);
+    stockfish.evaluatePosition(game.fen(), 12);
     stockfish.onMessage((msg) => {
       if (msg.bestMove) {
         const move = {
