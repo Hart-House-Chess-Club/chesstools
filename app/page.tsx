@@ -34,11 +34,14 @@ export default function Home() {
                 <Button size="lg" variant="outline" asChild>
                   <Link href="/generator">Convert FEN to PNG</Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+                <Button size="lg" asChild>
                   <Link href="/analysis">Analyze Games</Link>
                 </Button>
-                <Button size="lg" asChild>
+                <Button size="lg" variant="outline" asChild>
                   <Link href="/estimator">Estimate Ratings</Link>
+                </Button>
+                <Button size="lg"  >
+                  <Link href="https://api.chesstools.org">Ratings API</Link>
                 </Button>
               </div>
             </div>
