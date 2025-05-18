@@ -43,9 +43,13 @@
               git pull origin main
               npm ci
               npm run build
-              pm2 list
-              # Stop existing process if running
-              pm2 restart chesstools || true
-              pm2 start npm --name "chesstools" -- start -- --port 3001
+
+              # Ensure no duplicate processes
+              if pm2 list | grep -q "chesstools"; then
+                  pm2 restart chesstools
+              else
+                  pm2 start npm --name "chesstools" -- start -- --port 3001
+              fi
+
               pm2 save
               pm2 status
