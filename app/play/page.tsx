@@ -63,7 +63,7 @@ export default function PlayStockfishPage() {
           setMoveHistory([...moveHistory, game.fen()]);
         }
         setWaiting(false);
-        if (game.game_over()) setStatus("Game over");
+        if (game.isGameOver()) setStatus("Game over");
       }
     });
   };
@@ -84,7 +84,7 @@ export default function PlayStockfishPage() {
     setGame(new Chess(game.fen()));
     setFen(game.fen());
     setTimeout(() => makeStockfishMove(), 400);
-    if (game.game_over()) setStatus("Game over");
+    if (game.isGameOver()) setStatus("Game over");
     return true;
   }
 
