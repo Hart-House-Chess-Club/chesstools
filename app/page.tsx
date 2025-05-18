@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background py-20">
+      <section className="relative overflow-hidden bg-linear-to-b from-primary/10 to-background py-20">
         <div className="absolute -top-24 -left-24 opacity-10">
           <ChessBoard size={300} />
         </div>
@@ -208,7 +208,7 @@ export default function Home() {
                   height={500}
                   className="w-full h-auto"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end">
                   <div className="p-4 text-white">
                     <h3 className="text-xl font-bold mb-1">
                       Supporting Chess Tournaments Worldwide
@@ -227,7 +227,7 @@ export default function Home() {
                   height={500}
                   className="w-full h-auto"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end">
                   <div className="p-4 text-white">
                     <h3 className="text-xl font-bold mb-1">
                       Improving Analysis of Games
@@ -246,7 +246,7 @@ export default function Home() {
                   height={500}
                   className="w-full h-auto"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end">
                   <div className="p-4 text-white">
                     <h3 className="text-xl font-bold mb-1">
                       Expanding Chess Technology

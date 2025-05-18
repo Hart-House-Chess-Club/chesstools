@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary/10 to-background">
+    <div className="min-h-screen bg-linear-to-b from-primary/10 to-background">
       {/* Hero Section with ChessBoard background */}
       <section className="relative overflow-hidden py-20">
         <div className="absolute -top-24 -left-24 opacity-10 pointer-events-none">
@@ -17,7 +17,7 @@ export default function AboutPage() {
           <ChessBoard size={260} />
         </div>
         <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-center bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-center bg-linear-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
             <span>
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="inline-block text-primary">
                 <path d="M12 2L8 6H16L12 2Z" fill="currentColor" />
@@ -35,8 +35,8 @@ export default function AboutPage() {
       {/* Main Content in Cards */}
       <section className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
-            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
+          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-xs hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-linear-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
               <span>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
                   <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
@@ -57,8 +57,8 @@ export default function AboutPage() {
             </CardContent>
           </Card>
           
-          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
-            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
+          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-xs hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-linear-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
               <span>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
                   <path d="M12 2L8 6H16L12 2Z" fill="currentColor" />
@@ -105,8 +105,8 @@ export default function AboutPage() {
 
         {/* Infrastructure & Contribution */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
-            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
+          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-xs hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-linear-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
               <span>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
                   <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
@@ -121,8 +121,8 @@ export default function AboutPage() {
             </CardContent>
           </Card>
           
-          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
-            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
+          <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 shadow-xs hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-linear-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2">
               <span>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
                   <path d="M12 2L8 6H16L12 2Z" fill="currentColor" />
