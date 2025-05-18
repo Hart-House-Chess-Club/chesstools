@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 
 // import Chess from 'chess.js';
-import { Chess, PieceColor, PieceType, Square } from 'chess.js';
+import { validateFen, Chess, Square } from 'chess.js';
 import { SparePiece } from "react-chessboard";
 
 import dynamic from "next/dynamic";
@@ -46,16 +46,19 @@ const inputStyle = {
 };
 
 export default function ChessBoardEditor() {
-  const game = useMemo(() => new Chess("8/8/8/8/8/8/8/8 w - - 0 1"), []); // empty board
+  const game = useMemo(() => {
+    // Use the initial chess position which includes kings instead of an empty board
+    return new Chess();
+  }, []); // Starting position with all pieces
   const [boardOrientation, setBoardOrientation] = useState<"white" | "black">("white");
   const [boardWidth, setBoardWidth] = useState(360);
   const [fenPosition, setFenPosition] = useState(game.fen());
   const handleSparePieceDrop = (piece: string, targetSquare: Square) => {
-    const color = piece[0] as PieceColor;
-    const type = piece[1].toLowerCase() as PieceType;
-    const success = game.put({
-      type,
-      color
+    const color = piece[0] as "w" | "b";
+    const type = piece[1].toLowerCase() as "p" | "n" | "b" | "r" | "q" | "k";
+    const success = game.put({ 
+      type: type,
+      color: color
     }, targetSquare);
     if (success) {
       setFenPosition(game.fen());
@@ -65,15 +68,15 @@ export default function ChessBoardEditor() {
     return success;
   };
   const handlePieceDrop = (sourceSquare: Square, targetSquare: Square, piece: string) => {
-    const color = piece[0] as PieceColor;
-    const type = piece[1].toLowerCase() as PieceType;
+    const color = piece[0] as "w" | "b";
+    const type = piece[1].toLowerCase() as "p" | "n" | "b" | "r" | "q" | "k";
 
     // this is hack to avoid chess.js bug, which I've fixed in the latest version https://github.com/jhlywa/chess.js/pull/426
     game.remove(sourceSquare);
     game.remove(targetSquare);
     const success = game.put({
-      type,
-      color
+      type: type,
+      color: color
     }, targetSquare);
     if (success) setFenPosition(game.fen());
     return success;
@@ -84,11 +87,8 @@ export default function ChessBoardEditor() {
   };
   const handleFenInputChange = (e: { target: { value: string; }; }) => {
     const fen = e.target.value;
-    const {
-      valid
-    } = game.validate_fen(fen);
     setFenPosition(fen);
-    if (valid) {
+    if (validateFen(fen)) {
       game.load(fen);
       setFenPosition(game.fen());
     }
@@ -107,8 +107,8 @@ export default function ChessBoardEditor() {
         }}>
             {pieces.slice(6, 12).map(piece => 
               {
-                const color = piece[0] as PieceColor;
-                const type = piece[1].toLowerCase() as PieceType;
+                const color = piece[0].toString();
+                const type = piece[1].toLowerCase().toString();
       
                 const formattedPiece = `${color}${type.toUpperCase()}` as Pc;
       
@@ -117,7 +117,8 @@ export default function ChessBoardEditor() {
               )
             }
           </div>
-          <Chessboard onBoardWidthChange={setBoardWidth} id="ManualBoardEditor" boardOrientation={boardOrientation} position={game.fen()} onSparePieceDrop={handleSparePieceDrop} onPieceDrop={handlePieceDrop} onPieceDropOffBoard={handlePieceDropOffBoard} dropOffBoardAction="trash" customBoardStyle={{
+          <Chessboard onBoardWidthChange={setBoardWidth} id="ManualBoardEditor" boardOrientation={boardOrientation} position={game.fen()} 
+              onSparePieceDrop={handleSparePieceDrop} onPieceDrop={handlePieceDrop} onPieceDropOffBoard={handlePieceDropOffBoard} dropOffBoardAction="trash" customBoardStyle={{
           borderRadius: "4px",
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.5)"
         }} />
@@ -126,8 +127,8 @@ export default function ChessBoardEditor() {
           margin: `${boardWidth / 32}px ${boardWidth / 8}px`
         }}>
         {pieces.slice(0, 6).map(piece => {
-          const color = piece[0] as PieceColor;
-          const type = piece[1].toLowerCase() as PieceType;
+          const color = piece[0].toString();
+          const type = piece[1].toLowerCase().toString();
 
           const formattedPiece = `${color}${type.toUpperCase()}` as Pc;
 
@@ -146,7 +147,8 @@ export default function ChessBoardEditor() {
             Start position
           </button>
           <button style={buttonStyle} onClick={() => {
-          game.clear();
+          // Load a minimal valid position with just kings
+          game.load("4k3/8/8/8/8/8/8/4K3 w - - 0 1");
           setFenPosition(game.fen());
         }}>
             Clear board

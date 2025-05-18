@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 
 // import Chess from 'chess.js';
-import { Chess, Square } from 'chess.js';
+import { validateFen, Chess, Square } from 'chess.js';
 
 import dynamic from "next/dynamic";
 import useStockfish from "./stockfish/engine";
@@ -87,22 +87,24 @@ export  default function AnalysisBoard() {
         stop();
         setBestline("");
     
-        if (game.game_over() || game.in_draw()) return false;
+        if (game.isGameOver() || game.isDraw()) return false;
     
         return true;
       }
     
+      const memoizedFindBestMove = React.useCallback(findBestMove, [
+        chessBoardPosition, evaluatePosition, game, onMessage
+      ]);
+      
       useEffect(() => {
-        if (!game.game_over() || game.in_draw()) {
-          findBestMove();
+        if (!game.isGameOver() || game.isDraw()) {
+          memoizedFindBestMove();
         }
-      }, [chessBoardPosition]);
+      }, [chessBoardPosition, game, memoizedFindBestMove]);
     
       const bestMove = bestLine?.split(" ")?.[0];
       const handleFenInputChange = (e: { target: { value: string; }; }) => {
-        const { valid } = game.validate_fen(e.target.value);
-    
-        if (valid && inputRef.current) {
+        if (validateFen(e.target.value) && inputRef.current) {
           inputRef.current.value = e.target.value;
           game.load(e.target.value);
           setChessBoardPosition(game.fen());

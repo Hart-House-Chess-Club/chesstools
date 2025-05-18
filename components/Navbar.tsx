@@ -56,29 +56,31 @@ const Navbar = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/play" legacyBehavior passHref>
-                  <NavigationMenuLink
+                <NavigationMenuLink asChild>
+                  <Link 
+                    href="/play"
                     className={cn(
                       navigationMenuTriggerStyle(),
                       "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground",
                     )}
                   >
                     Play
-                  </NavigationMenuLink>
-                </Link>
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/about" legacyBehavior passHref>
-                  <NavigationMenuLink
+                <NavigationMenuLink asChild>
+                  <Link
+                    href="/about"
                     className={cn(
                       navigationMenuTriggerStyle(),
                       "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground",
                     )}
                   >
                     About
-                  </NavigationMenuLink>
-                </Link>
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>

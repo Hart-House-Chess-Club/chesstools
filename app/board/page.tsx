@@ -1,5 +1,11 @@
-import ChessBoardEditor from "@/components/ChessBoardEditor"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import ChessBoardEditor from "@/components/ChessBoardEditor";
+
+// // Dynamically import ChessBoardEditor with SSR disabled
+// const ChessBoardEditor = dynamic(
+//   () => import("@/components/ChessBoardEditor"),
+//   { ssr: false }
+// );
 
 export default function ChessBoard() {
   return (

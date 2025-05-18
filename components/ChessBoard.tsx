@@ -3,15 +3,15 @@
 import { useState } from "react";
 
 // import Chess from 'chess.js';
-import { Chess, ShortMove, Square } from 'chess.js';
+import { Chess, Move, Square } from 'chess.js';
 import { Chessboard } from "react-chessboard";
 
 
 export default function ChessBoardRandom() {
   const [game, setGame] = useState(new Chess());
 
-  function makeAMove(move: string | ShortMove) {
-    const gameCopy = { ...game };
+  function makeAMove(move: string | Move) {
+    const gameCopy = new Chess(game.fen());
     const result = gameCopy.move(move);
     setGame(gameCopy);
     return result; // null if the move was illegal, the move object if the move was legal
@@ -19,7 +19,7 @@ export default function ChessBoardRandom() {
 
   function makeRandomMove() {
     const possibleMoves = game.moves();
-    if (game.game_over() || game.in_draw() || possibleMoves.length === 0){
+    if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0){
       console.log("Game over")
       return; // exit if the game is over
     }
@@ -28,7 +28,7 @@ export default function ChessBoardRandom() {
   }
 
   function onDrop(sourceSquare: Square, targetSquare: Square) {
-    const move = makeAMove({
+    const move = game.move({
       from: sourceSquare,
       to: targetSquare,
       promotion: "q", // always promote to a queen for example simplicity
