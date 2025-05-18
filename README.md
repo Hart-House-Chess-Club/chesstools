@@ -47,7 +47,12 @@
   </p>
 </div>
 
-
+<!-- PROJECT SCREENSHOT -->
+<div align="center">
+  <a href="https://chesstools.org">
+    <img src="docs/homepage.png" alt="Chesstools Homepage" width="800">
+  </a>
+</div>
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -138,6 +143,13 @@ Below is the installation process for running our code locally.
 
 This project is the beginning of many related projects part of the Hart House Chess Club's development of open-source Canadian chess software.
 
+
+<!-- PROJECT SCREENSHOT -->
+<div align="center">
+  <a href="https://chesstools.org">
+    <img src="docs/estimator.png" alt="chesstools rating estimator" width="600">
+  </a>
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
