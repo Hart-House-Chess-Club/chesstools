@@ -211,7 +211,7 @@ Hart House Chess Club Executive Board
 - [hhchess@studentorg.utoronto.ca](mailto:hhchess@studentorg.utoronto.ca)
 
 Victor Zheng 
-- [@victor-zheng-codes](https://github.com/victor-zheng-codes)
+- [@vzcodes](https://github.com/vzcodes)
 
 Project Link: [https://github.com/Hart-House-Chess-Club/chesstools](https://github.com/Hart-House-Chess-Club/chesstools)
 
