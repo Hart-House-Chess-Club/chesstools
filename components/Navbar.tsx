@@ -45,6 +45,9 @@ const Navbar = () => {
                     <ListItem href="/analysis" title="Analysis">
                       Analyze games with Stockfish
                     </ListItem>
+                    <ListItem href="https://gif.chesstools.org/" title="GIF Generator">
+                      Generate GIFs from Lichess games
+                    </ListItem>
                     <ListItem href="https://api.chesstools.org/docs" title="Ratings API">
                       Retrieve ratings with our API
                     </ListItem>
@@ -108,6 +111,9 @@ const Navbar = () => {
               </Link>
               <Link href="/generator" className="text-lg font-medium">
                 Board Generator
+              </Link>
+              <Link href="https://gif.chesstools.org/" className="text-lg font-medium">
+                Chess GIF Generator
               </Link>
               <Link href="https://api.chesstools.org/docs" className="text-lg font-medium">
                 Ratings API
