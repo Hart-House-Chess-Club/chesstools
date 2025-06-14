@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 
 // import Chess from 'chess.js';
 import { Chess, Square } from 'chess.js';
@@ -50,7 +50,7 @@ export  default function AnalysisBoard() {
     const [bestLine, setBestline] = useState("");
     const [possibleMate, setPossibleMate] = useState("");
   
-    function findBestMove() {
+    const findBestMove = useCallback(() => {
       evaluatePosition(chessBoardPosition, 18);
       onMessage(({ positionEvaluation, possibleMate, pv, depth }) => {
         if (depth && depth < 10) return;
@@ -68,7 +68,7 @@ export  default function AnalysisBoard() {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         pv && setBestline(pv);
       });
-    }
+    }, [chessBoardPosition, evaluatePosition, onMessage, game]);
 
     // function onDrop(sourceSquare: Square, targetSquare: Square, piece: string) {
       function onDrop(sourceSquare: Square, targetSquare: Square) {
@@ -96,7 +96,7 @@ export  default function AnalysisBoard() {
         if (!game.game_over() || game.in_draw()) {
           findBestMove();
         }
-      }, [chessBoardPosition]);
+      }, [chessBoardPosition, findBestMove, game]);
     
       const bestMove = bestLine?.split(" ")?.[0];
       const handleFenInputChange = (e: { target: { value: string; }; }) => {
