@@ -54,6 +54,9 @@ const Navbar = () => {
                     <ListItem href="/estimator" title="Ratings Estimator">
                       Estimate ratings with FIDE and CFC
                     </ListItem>
+                    <ListItem href="https://cfc.chesstools.org/" title="CFC Ratings Processor">
+                      Process Canadian ratings with latest ratings from the CFC
+                    </ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -120,6 +123,9 @@ const Navbar = () => {
               </Link>
               <Link href="/about" className="text-lg font-medium">
                 About
+              </Link>
+              <Link href="https://cfc.chesstools.org/"  className="text-lg font-medium">
+                CFC Ratings Processor
               </Link>
             </div>
           </SheetContent>
