@@ -51,11 +51,11 @@ const Navbar = () => {
                     <ListItem href="https://api.chesstools.org/docs" title="Ratings API">
                       Retrieve ratings with our API
                     </ListItem>
-                    <ListItem href="/estimator" title="Ratings Estimator">
-                      Estimate ratings with FIDE and CFC
-                    </ListItem>
                     <ListItem href="https://cfc.chesstools.org/" title="CFC Ratings Processor">
                       Process Canadian ratings with latest ratings from the CFC
+                    </ListItem>
+                    <ListItem href="/estimator" title="Ratings Estimator">
+                      Estimate ratings with FIDE and CFC
                     </ListItem>
                   </ul>
                 </NavigationMenuContent>
@@ -118,14 +118,14 @@ const Navbar = () => {
               <Link href="https://gif.chesstools.org/" className="text-lg font-medium">
                 Chess GIF Generator
               </Link>
+              <Link href="https://cfc.chesstools.org/"  className="text-lg font-medium">
+                CFC Ratings Processor
+              </Link>
               <Link href="https://api.chesstools.org/docs" className="text-lg font-medium">
                 Ratings API
               </Link>
               <Link href="/about" className="text-lg font-medium">
                 About
-              </Link>
-              <Link href="https://cfc.chesstools.org/"  className="text-lg font-medium">
-                CFC Ratings Processor
               </Link>
             </div>
           </SheetContent>
