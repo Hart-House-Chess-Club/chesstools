@@ -146,6 +146,46 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <Card className="max-w-2xl mx-auto overflow-hidden border border-gray-200 dark:border-gray-800 shadow-xs hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="bg-linear-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center gap-2 text-center">
+              <span className="mx-auto">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              </span>
+              <CardTitle className="text-center w-full">Get in Touch</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6 text-center">
+              <p className="text-lg mb-4">
+                Have questions, suggestions, or feedback about our chess tools?
+              </p>
+              <p className="mb-6">
+                We&apos;d love to hear from you! Send us an email and we&apos;ll get back to you as soon as possible.
+              </p>
+              <div className="flex flex-col items-center gap-4">
+                <Link 
+                  href="mailto:info@chesslink.org"
+                  className="inline-flex items-center px-8 py-4 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-lg font-medium"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="mr-2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  info@chesslink.org
+                </Link>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  We typically respond within 24-48 hours
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* Call to Action */}
       <section className="py-16 bg-primary text-primary-foreground mt-16">
         <div className="container mx-auto px-4 text-center">
