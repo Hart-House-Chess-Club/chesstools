@@ -168,14 +168,14 @@ export default function AboutPage() {
               </p>
               <div className="flex flex-col items-center gap-4">
                 <Link 
-                  href="mailto:info@chesslink.org"
+                  href="mailto:info@chesstools.org"
                   className="inline-flex items-center px-8 py-4 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-lg font-medium"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="mr-2">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="2" fill="none"/>
                   <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2"/>
                   </svg>
-                  info@chesslink.org
+                  info@chesstools.org
                 </Link>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   We typically respond within 24-48 hours
