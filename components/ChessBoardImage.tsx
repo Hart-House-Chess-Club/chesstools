@@ -15,10 +15,28 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  
+  // Maximum reasonable length for a FEN string
+  const MAX_FEN_LENGTH = 100
 
   const handleFetchImage = async () => {
     setLoading(true)
     setError(null)
+    
+    // Client-side validation
+    if (fen.length > MAX_FEN_LENGTH) {
+      setError(`FEN string too long (${fen.length} characters). Maximum allowed is ${MAX_FEN_LENGTH} characters.`)
+      setLoading(false)
+      return
+    }
+    
+    // Check for obvious non-FEN content
+    if (fen.includes(':') || fen.includes('.') || fen.includes('Black') || fen.includes('White')) {
+      setError('Please enter a valid FEN string, not a description of the position.')
+      setLoading(false)
+      return
+    }
+    
     try {
       const res = await fetch('/api/fen', {
         method: 'POST',
@@ -56,6 +74,13 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
     }
   };
 
+  // Check if the current FEN input is valid for submission
+  const isValidForSubmission = () => {
+    if (fen.length === 0 || fen.length > MAX_FEN_LENGTH) return false
+    if (fen.includes(':') || fen.includes('.') || fen.includes('Black') || fen.includes('White')) return false
+    return true
+  }
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -69,13 +94,36 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
           <Input
             id="fen-input"
             value={fen}
-            onChange={(e) => setFen(e.target.value)}
+            onChange={(e) => {
+              const newValue = e.target.value
+              if (newValue.length <= MAX_FEN_LENGTH) {
+                setFen(newValue)
+                setError(null) // Clear error when user starts typing valid length
+              }
+            }}
             placeholder="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+            maxLength={MAX_FEN_LENGTH}
           />
-          <p className="text-xs text-gray-500">
-            Enter a valid FEN string (e.g., starting position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1)
-          </p>
+          <div className="flex justify-between items-center">
+            <p className="text-xs text-gray-500">
+              Enter a valid FEN string (max {MAX_FEN_LENGTH} characters)
+            </p>
+            <p className={`text-xs ${fen.length > MAX_FEN_LENGTH * 0.9 ? 'text-orange-500' : 'text-gray-400'}`}>
+              {fen.length}/{MAX_FEN_LENGTH}
+            </p>
+          </div>
         </div>
+        {/* Show validation warnings */}
+        {fen.length > 0 && !isValidForSubmission() && (
+          <div className="text-amber-600 text-sm">
+            {fen.length > MAX_FEN_LENGTH && (
+              <p>⚠️ FEN string too long ({fen.length}/{MAX_FEN_LENGTH} characters)</p>
+            )}
+            {(fen.includes(':') || fen.includes('.') || fen.includes('Black') || fen.includes('White')) && (
+              <p>⚠️ This looks like a description, not a FEN string</p>
+            )}
+          </div>
+        )}
         {error && <p className="text-red-500 text-sm">{error}</p>}
         {imageUrl && !loading && (
           <div className="mt-4">
@@ -86,7 +134,11 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
         )}
       </CardContent>
       <CardFooter>
-        <Button onClick={handleFetchImage} disabled={loading} className="w-full">
+        <Button 
+          onClick={handleFetchImage} 
+          disabled={loading || !isValidForSubmission()} 
+          className="w-full"
+        >
           {loading ? "Generating..." : "Generate Chess Board Image"}
         </Button>
       </CardFooter>
