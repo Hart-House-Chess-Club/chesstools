@@ -29,7 +29,8 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
       })
 
       if (!res.ok) {
-        throw new Error('Failed to generate chess board image')
+        const errorData = await res.json()
+        throw new Error(errorData.error || 'Failed to generate chess board image')
       }
 
       const data = await res.json()
@@ -69,8 +70,11 @@ const ChessBoardImage: React.FC<ChessBoardImageProps> = ({ initialFen = "rnbqkbn
             id="fen-input"
             value={fen}
             onChange={(e) => setFen(e.target.value)}
-            placeholder="Enter FEN string"
+            placeholder="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
           />
+          <p className="text-xs text-gray-500">
+            Enter a valid FEN string (e.g., starting position: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1)
+          </p>
         </div>
         {error && <p className="text-red-500 text-sm">{error}</p>}
         {imageUrl && !loading && (

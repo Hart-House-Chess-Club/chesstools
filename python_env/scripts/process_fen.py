@@ -11,9 +11,20 @@ if len(sys.argv) > 1:
 else:
     # Default FEN if not provided
     fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+# Validate FEN string before processing
+try:
+    # Test if the FEN is valid by trying to create a chess board
+    test_board = chess.Board(fen)
     
-# Generate the board image based on the FEN string
-renderer = BoardImage(fen)
+    # Generate the board image based on the FEN string
+    renderer = BoardImage(fen)
+except ValueError as e:
+    print(f"ERROR: Invalid FEN string: {e}", file=sys.stderr)
+    sys.exit(1)
+except Exception as e:
+    print(f"ERROR: Failed to process FEN: {e}", file=sys.stderr)
+    sys.exit(1)
 
 # highlighted_squares=(chess.F8, chess.B4)
 image = renderer.render()
